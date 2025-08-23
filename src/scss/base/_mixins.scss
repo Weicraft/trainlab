@@ -1,0 +1,50 @@
+/** Media Queries **/
+
+@use 'variables' as v;
+@mixin tinyMovil {
+    @media (min-width: #{v.$tinyMovil}) {
+        @content;
+    }
+}
+
+@mixin movil {
+    @media (min-width: #{v.$movil}) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: #{v.$tablet}) {
+        @content;
+    }
+}
+
+@mixin oldDesktop {
+    @media (min-width: #{v.$oldDesktop}) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: #{v.$desktop}) {
+        @content;
+    }
+}
+
+@mixin grid($columnas, $espaciado) {
+    display: grid;
+    gap: $espaciado;
+    grid-template-columns: repeat($columnas, 1fr);
+}
+
+@mixin grid2($columnas, $espaciado) {
+    display: grid;
+    gap: $espaciado;
+    grid-template-columns: (15% 70% 15%);
+}
+
+@mixin grid3($columnas, $espaciado) {
+    display: grid;
+    gap: $espaciado;
+    grid-template-columns: (90% 10%);
+}

@@ -1,0 +1,84 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+.contenido {
+    display: flex;
+    justify-content: space-between;
+}
+.panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    h3 {
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .options {
+        margin-top: 4rem;
+        @include m.grid(1, 10rem);
+        padding: 2rem;
+
+        @include m.tablet {
+            margin-top: 4rem;
+            @include m.grid(2, 10rem);
+            padding: 2rem;
+        }
+    }
+
+    .options2 {
+        margin-top: 4rem;
+        @include m.grid(1, 10rem);
+        padding: 2rem;
+
+        @include m.tablet {
+            margin-top: 4rem;
+            @include m.grid(2, 10rem);
+            padding: 2rem;
+        }
+    }
+
+    .option {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        -webkit-box-shadow: 0px 5px 15px 0px rgba(122, 118, 122, 1);
+        -moz-box-shadow: 0px 5px 15px 0px rgba(122, 118, 122, 1);
+        box-shadow: 0px 5px 15px 0px rgba(122, 118, 122, 1);
+        background-color: var(--white);
+        padding: 4rem 2rem;
+        border-radius: 1rem;
+
+        &:hover {
+            width: 102%;
+            height: 102%;
+        }
+
+        .btn-eliminar {
+            position: absolute;
+            bottom: 10px;
+            right: 10px; // ← Cambiado de left a right
+            background-color: #fcebea; // rojo pastel claro
+            color: #c0392b; // rojo principal
+            border: 1px solid #f5b7b1;
+            border-radius: 0.6rem;
+            padding: 0.4rem 0.6rem;
+            cursor: pointer;
+            transition: background-color 0.25s ease, transform 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+                background-color: #f8d7da;
+                transform: scale(1.05);
+            }
+
+            &:active {
+                transform: scale(0.95);
+            }
+        }
+    }
+}

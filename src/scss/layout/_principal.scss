@@ -1,0 +1,144 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+.formulario {
+    margin: 2rem auto 2rem auto;
+    justify-content: center;
+
+    fieldset {
+        border: none;
+
+        legend {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: v.$bold;
+            text-transform: uppercase;
+        }
+        
+    .button-contenedor {
+        margin-top: 3rem;
+        display: flex;
+        justify-content: center;
+    }
+    }
+
+    .form-body {
+        margin-top: 2rem;
+    }
+
+    .form-field {
+        justify-content: flex-end;
+
+        @include m.tablet {
+            @include m.grid(2, 1rem);
+            align-items: center;
+            margin-top: 1rem;
+
+            .label {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .label2 {
+                display: flex;
+                justify-content: flex-start;
+            }
+        }
+    }
+
+    .form-field-hidden {
+        justify-content: flex-end;
+
+        @include m.tablet {
+            @include m.grid(2, 1rem);
+            margin-top: 0;
+            align-items: center;
+
+            .label {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+    }
+    .input-group {
+  position: relative;
+  width: 100%;
+
+  input[type="password"],
+  input[type="text"] {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: 'Inter', sans-serif;
+
+    &:focus {
+      border-color: #666;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+  }  
+}
+.toggle-password {
+    cursor: pointer;
+  }
+
+    .field {
+        width: 20rem;
+        padding: 0.75rem 1rem;
+        font-size: 1.5rem;
+        border: 1px solid #ccc; // plomo claro
+        border-radius: 0.5rem;
+        outline: none;
+        background-color: #fff;
+        color: #333;
+        transition: border-color 0.3s, box-shadow 0.3s;
+
+        &:focus {
+            border-color: #666; // plomo más oscuro al enfocar
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05); // halo suave
+        }
+
+        &::placeholder {
+            color: #aaa;
+            opacity: 1;
+        }
+    } 
+    
+    .field_2 {
+        width: 40rem;
+        padding: 0.75rem 1rem;
+        font-size: 1.5rem;
+        border: 1px solid #ccc; // plomo claro
+        border-radius: 0.5rem;
+        outline: none;
+        background-color: #fff;
+        color: #333;
+        transition: border-color 0.3s, box-shadow 0.3s;
+
+        &:focus {
+            border-color: #666; // plomo más oscuro al enfocar
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05); // halo suave
+        }
+
+        &::placeholder {
+            color: #aaa;
+            opacity: 1;
+        }
+    } 
+}
+
+.alerta {
+    width: 100%;
+    padding: .5rem;
+    text-align: center;
+    color: v.$blanco;
+    font-weight: v.$bold;
+    text-transform: uppercase;
+    margin: 1rem 0;
+
+    &.error {
+        background-color: v.$rojo;
+    }
+}

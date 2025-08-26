@@ -237,6 +237,26 @@ p {
     }
 }
 
+.ver-examen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05rem; // casi pegado, mínima separación
+  cursor: pointer;
+}
+
+.texto-examen {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333333;
+}
+
+.icono-examen {
+  width: 48px;
+  height: 48px;
+}
+
 .boton-ver {
     background-color: #e2f0f9;
     color: #317b9b;
@@ -419,6 +439,46 @@ p {
     &:focus {
         outline: none;
         border-color: #9cc7e8;
+    }
+}
+
+.boton-eliminar-examen {
+    background-color: #fdecea;
+    color: #d93025;
+    border: 1px solid #f5c6c2;
+    padding: 0.8rem 1.6rem;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    border-radius: 0.6rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+
+    &:hover {
+        background-color: #f8d7da;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+    }
+
+    &:active {
+        transform: scale(0.97);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #f5a5a0;
+    }
+
+    svg {
+        width: 1.2rem;
+        height: 1.2rem;
+        fill: #d93025;
     }
 }
 

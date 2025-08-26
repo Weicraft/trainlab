@@ -23,9 +23,10 @@ $indice = $_GET['indice'];
 
 CURSOS::setDB($db);
 CONTENIDOS::setDB($db);
+EXAMEN_PREGUNTAS::setDB($db);
 $cursoVer = CURSOS::listarCursoId($id_curso);
 $contenidos = CONTENIDOS::listarContenidoCurso($id_curso);
-
+$examen = EXAMEN_PREGUNTAS::listarExamenCurso($id_curso);
 //$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('4', $id_user);
 
 ?>
@@ -102,9 +103,31 @@ $contenidos = CONTENIDOS::listarContenidoCurso($id_curso);
             </div>
             <div class="flex">
                 <a href="nuevocontenido.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><button class="boton-agregar margin-top">+ Agregar Nuevo Contenido</button></a>
-                <?php if ($cursoVer->examen == '1') { ?>
-                    <a href="nuevoexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><button class="boton-examen margin-top">+ Crear Examen</button></a>
-                <?php } ?>
+                <?php if ($cursoVer->examen == '1') {
+                    if (!$examen) { ?>
+                        <a href="nuevoexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><button class="boton-examen margin-top">+ Crear Examen</button></a>
+                    <?php } else { ?>
+                        <a href="verexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                            <div class="ver-examen margin-tiny-top">
+                                <span class="texto-examen">Ver Examen</span>
+                                <svg class="icono-examen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="48" height="48">
+                                    <!-- Hoja -->
+                                    <rect x="10" y="6" width="44" height="52" rx="4" ry="4" fill="#ffffff" stroke="#6fd28e" stroke-width="2" />
+                                    <!-- Líneas de texto -->
+                                    <line x1="16" y1="16" x2="48" y2="16" stroke="#6fd28e" stroke-width="2" />
+                                    <line x1="16" y1="24" x2="48" y2="24" stroke="#6fd28e" stroke-width="2" />
+                                    <line x1="16" y1="32" x2="48" y2="32" stroke="#6fd28e" stroke-width="2" />
+                                    <line x1="16" y1="40" x2="48" y2="40" stroke="#6fd28e" stroke-width="2" />
+                                    <!-- Opciones tipo círculo -->
+                                    <circle cx="16" cy="50" r="2" fill="#6fd28e" />
+                                    <circle cx="24" cy="50" r="2" fill="#6fd28e" />
+                                    <circle cx="32" cy="50" r="2" fill="#6fd28e" />
+                                    <circle cx="40" cy="50" r="2" fill="#6fd28e" />
+                                </svg>
+                            </div>
+                        </a>
+                <?php }
+                } ?>
             </div>
             <?php if ($contenidos) { ?>
                 <table class="formulario diseño_tablas">

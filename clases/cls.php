@@ -1051,6 +1051,53 @@ class EXAMEN_PREGUNTAS extends Master
         $this->id_pregunta = self::$db->insert_id;
     }
 
+    //R -> Listar EXAMEN por CURSO
+    public static function listarExamenCurso($id_curso)
+    {
+        $qry = "SELECT * FROM preguntas WHERE id_curso = $id_curso";
+        $result = self::consultarSQL($qry);
+
+        return $result;
+    }
+
+    //R -> Listar PREGUNTA por OD
+    public static function listarPreguntaId($id_pregunta)
+    {
+        $qry = "SELECT * FROM preguntas WHERE id_pregunta = $id_pregunta";
+        $result = self::consultarSQL($qry);
+
+        return array_shift($result);
+    }
+
+    //U -> Actualizar datos del CONTENIDO:
+    public function editPregunta(
+        $id_pregunta,
+        $texto_pregunta
+    ) {
+        $qry = "UPDATE preguntas SET texto_pregunta='$texto_pregunta' WHERE id_pregunta='$id_pregunta'";
+        self::$db->query($qry);
+    }
+
+    //U -> Eliminar PREGUNTA:
+    public function elimPregunta($id_pregunta)
+    {
+        $qry = "DELETE FROM preguntas WHERE id_pregunta='$id_pregunta'";
+        self::$db->query($qry);
+    }
+
+    public function eliminarExamen($id_curso) {
+        // Eliminar respuestas primero
+        $qry1 = "DELETE respuestas
+                 FROM respuestas 
+                 INNER JOIN preguntas ON respuestas.id_pregunta = preguntas.id_pregunta
+                 WHERE preguntas.id_curso = '$id_curso'";
+        self::$db->query($qry1);
+
+        // Luego eliminar preguntas
+        $qry2 = "DELETE FROM preguntas WHERE id_curso = $id_curso";
+        self::$db->query($qry2);
+    }
+
     //Identificar y unir los atributos de la BD
     public function atributos()
     {
@@ -1137,6 +1184,31 @@ class EXAMEN_RESPUESTAS extends Master
     {
         $qry = "INSERT INTO respuestas (id_pregunta, texto_respuesta, es_correcta)
         VALUES ('$id_pregunta', '$texto_respuesta', '$es_correcta')";
+        self::$db->query($qry);
+    }
+
+    //R -> Listar RESPUESTAS por PREGUNTAS
+    public static function listarRespuestasPregunta($id_pregunta)
+    {
+        $qry = "SELECT * FROM respuestas WHERE id_pregunta = $id_pregunta";
+        $result = self::consultarSQL($qry);
+
+        return $result;
+    }
+
+    //U -> Actualizar datos del CONTENIDO:
+    public function editRespuesta(
+        $id_respuesta,
+        $texto_respuesta
+    ) {
+        $qry = "UPDATE respuestas SET texto_respuesta='$texto_respuesta' WHERE id_respuesta='$id_respuesta'";
+        self::$db->query($qry);
+    }
+
+    //U -> Eliminar RESPUESTAS:
+    public function elimRespuestas($id_pregunta)
+    {
+        $qry = "DELETE FROM respuestas WHERE id_pregunta='$id_pregunta'";
         self::$db->query($qry);
     }
 

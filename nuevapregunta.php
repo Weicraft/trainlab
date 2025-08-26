@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     
-    header("Location: curso.php?id_curso=$id_curso&indice=$indice");
+    header("Location: verexamen.php?id_curso=$id_curso&indice=$indice");
 }
 ?>
 <!DOCTYPE html>
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div id="preguntas-container">
                             <!-- Primera pregunta -->
                             <div>
-                                <label><strong>Pregunta 1:</strong></label><br><br>
+                                <label><strong>Pregunta:</strong></label><br><br>
                                 <input type="text" class="field_2" name="pregunta[]" placeholder="Escribe la pregunta"><br><br>
 
                                 <label>Respuesta 1:</label><br>
@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="button" class="boton-agregar-pregunta" id="agregar-pregunta">Agregar Pregunta</button><br><br>
                         <div class="flex">
                             <button type="submit" class="boton-grabar">Guardar Examen</button>
-                            <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Salir sin grabar</a>
+                            <a class="boton-salir" href="verexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Salir sin grabar</a>
                         </div>
                     </form>
 

@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Determinar si aprobó
     $porcentaje = ($respuestas_correctas / $total_preguntas) * 100;
-    $estado_examen = ($porcentaje >= 50) ? 'Aprobado' : 'Reprobado';
+    $estado_examen = ($porcentaje > 50) ? 'Aprobado' : 'Reprobado';
 
     if($estado_examen == 'Aprobado') {
         $aprobarCurso = new ASIGNACIONES();

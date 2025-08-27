@@ -97,7 +97,7 @@ $reinicarProgreso->elimProgreso($id_curso, $id_particip);
                             <?php if ($intentos_restantes > 0) : ?>
                                 <div class="flex-simple-center"><p class="mensaje-intentos-final">Te quedan <?php echo $intentos_restantes; ?> intentos</p></div>
                             <?php else : ?>
-                                <div class="flex-simple-center"><p class="mensaje-intentos-final">Ya no te quedan más intentos. Vuelve a llevar el curso.</p></div>
+                                <div class="flex-simple-center"><p class="mensaje-intentos-final">¡YA NO TE QUEDAN MÁS INTENTOS, VUELVE A LLEVAR EL CURSO!</p></div>
                             <?php endif; ?>
                         <?php endif; ?>
                         <a class="boton-grabar margin-top" href="detallecurso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Volver al Curso</a>

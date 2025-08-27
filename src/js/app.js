@@ -49,3 +49,4 @@ document.getElementById("agregar-pregunta").addEventListener("click", function()
   container.appendChild(nuevaPregunta);
   contador++;
 });
+

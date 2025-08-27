@@ -19,6 +19,7 @@ if (!$auth) {
 
 //$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
 
+CURSOS::setDB($db);
 PARTICIPANTES::setDB($db);
 ASIGNACIONES::setDB($db);
 PROGRESO::setDB($db);
@@ -59,7 +60,7 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                 <div style="display: flex; gap: 20px; font-family: Arial, sans-serif;">
                     <!-- Curso sin examen -->
                     <div style="flex: 1; background: #f5e9f8; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                        <h3 style="margin-top:0;">📌 Curso sin examen</h3>
+                        <h3 style="margin-top:0;">📌 <strong>Curso sin examen</strong></h3>
                         <ul style="padding-left: 20px; margin:0;">
                             <li>▶ Inicia el curso</li>
                             <li>📖 Mira todo el contenido</li>
@@ -69,7 +70,7 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
 
                     <!-- Curso con examen -->
                     <div style="flex: 1; background: #e8f5e9; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                        <h3 style="margin-top:0;">📌 Curso con examen</h3>
+                        <h3 style="margin-top:0;">📌 <strong>Curso con examen</strong></h3>
                         <ul style="padding-left: 20px; margin:0;">
                             <li>▶ Inicia el curso</li>
                             <li>📖 Mira todo el contenido</li>
@@ -90,9 +91,12 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                             <th>Nombre curso/capacitación</th>
                             <th>Fecha Asignación</th>
                             <th>Estado del Curso</th>
+                            <th>Examen</th>
                             <th>Comenzar</th>
+                            <th>Nota</th>
                         </tr>
                         <?php foreach ($asignaciones as $asignacion) :
+                            $curso = CURSOS::listarCursoId($asignacion->id_curso);
                             $contarTotalContenidos = CONTENIDOS::contarContenidos($asignacion->id_curso);
                             $contarContenidosIniciados = PROGRESO::listarProgresosIniciados($asignacion->id_curso, $id_particip);
                             $contarContenidosFinalados = PROGRESO::listarProgresosFinalizados($asignacion->id_curso, $id_particip);
@@ -107,15 +111,24 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                                     <?php echo date("d-m-Y", strtotime("$asignacion->fecha_asign")); ?>
                                 </td>
                                 <td>
-                                    <?php 
-                                    if($contenidosIniciados == '0' && $contenidosFinalizados == '0') {
+                                    <?php
+                                    if ($contenidosIniciados == '0' && $contenidosFinalizados == '0') {
                                         echo '<div class="rojo">Sin Iniciar</div>';
-                                    } elseif($contenidosIniciados != '0' && $totalContenidos > $contenidosFinalizados) {
+                                    } elseif ($contenidosIniciados != '0' && $totalContenidos > $contenidosFinalizados) {
                                         echo '<div class="azul">En curso</div>';
-                                    } elseif($totalContenidos == $contenidosFinalizados) {
+                                    } elseif ($totalContenidos == $contenidosFinalizados && $asignacion->estado_aprob != 'A') {
+                                        echo '<div class="naranja">Culminado sin Evaluación</div>';
+                                    } elseif ($totalContenidos == $contenidosFinalizados && $asignacion->estado_aprob == 'A') {
                                         echo '<div class="verde">Culminado</div>';
                                     }
                                     ?>
+                                </td>
+                                <td>
+                                    <?php if ($curso->examen == '1') {
+                                        echo '<div class="rojo"><strong>SI</strong></div>';
+                                    } else {
+                                        echo '<div class="azul"><strong>NO</strong></div>';
+                                    } ?>
                                 </td>
                                 <td>
                                     <div class="flex-simple-center">
@@ -128,6 +141,15 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                                             </button>
                                         </a>
                                     </div>
+                                </td>
+                                <td>
+                                    <?php
+                                    if ($asignacion->nota) {
+                                        echo '<strong>' . $asignacion->nota . '</strong>';
+                                    } else {
+                                        echo 'S/N';
+                                    }
+                                    ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

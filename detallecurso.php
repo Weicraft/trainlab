@@ -8,7 +8,6 @@ $identificador = '0';
 $auth = estaAutenticado();
 $db = conectarDB();
 
-
 //SESIONES::setDB($db);
 
 if (!$auth) {
@@ -22,12 +21,27 @@ $indice = $_GET['indice'];
 
 PARTICIPANTES::setDB($db);
 PROGRESO::setDB($db);
+ASIGNACIONES::setDB($db);
 $participante = PARTICIPANTES::listarParticipanteId($id_particip);
 CURSOS::setDB($db);
 CONTENIDOS::setDB($db);
 $cursoVer = CURSOS::listarCursoId($id_curso);
 $contenidos = CONTENIDOS::listarContenidoCurso($id_curso);
+$asignaciones = ASIGNACIONES::listarAsignacion($id_particip, $id_curso);
 
+
+foreach ($contenidos as $contenido) :
+    $contarTotalContenidos = CONTENIDOS::contarContenidos($contenido->id_curso);
+    $contarContenidosIniciados = PROGRESO::listarProgresosIniciados($contenido->id_curso, $id_particip);
+    $contarContenidosFinalados = PROGRESO::listarProgresosFinalizados($contenido->id_curso, $id_particip);
+    $totalContenidos = $contarTotalContenidos->contarContenidos;
+    $contenidosIniciados = $contarContenidosIniciados->contarProgreso;
+    $contenidosFinalizados = $contarContenidosFinalados->contarProgreso;
+    if($cursoVer->examen == '0' && $totalContenidos == $contenidosFinalizados) {
+        $aprobarCurso = new ASIGNACIONES();
+        $aprobarCurso->aprobarCursoAsig($id_particip, $id_curso);
+    }
+endforeach;
 //$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('4', $id_user);
 
 ?>
@@ -57,6 +71,29 @@ $contenidos = CONTENIDOS::listarContenidoCurso($id_curso);
     <main class="principal">
         <div class="contenedor tablas">
             <h2>CURSO: <?php echo $cursoVer->titulo_curso; ?></h2>
+
+            <?php
+
+            if ($asignaciones->estado_aprob == 'A' || ($cursoVer->examen == '0' && $totalContenidos == $contenidosFinalizados)) { ?>
+                <div class="tl-cert-banner tl-cert-theme-lilac">
+                    <div class="tl-cert-icon" aria-hidden="true">
+                        <!-- icono svg -->
+                        <svg viewBox="0 0 24 24" width="42" height="42">
+                            <path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Z" fill="currentColor" opacity="0.15" />
+                            <path d="M10.2 15.2 7.5 12.6a1 1 0 1 1 1.4-1.4l1.7 1.7 4.5-4.5a1 1 0 0 1 1.4 1.4l-5.2 5.2a1 1 0 0 1-1.6 0Z" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="tl-cert-content">
+                        <h3 class="tl-cert-title">HAS CULMINADO ESTE CURSO CON ÉXITO</h3>
+                        <p class="tl-cert-sub">PUEDES DESCARGAR TU CERTIFICADO</p>
+                    </div>
+
+                    <div class="tl-cert-actions">
+                        <!-- reemplaza href con tu link -->
+                        <a class="tl-cert-btn" href="#" download>Ver certificado</a>
+                    </div>
+                </div>
+            <?php } ?>
             <div class="instruccion info">
                 <span class="icon">ℹ️</span>
                 <p>A continuación encontrarás la información general de este curso.</p>
@@ -103,6 +140,17 @@ $contenidos = CONTENIDOS::listarContenidoCurso($id_curso);
                     <p>Para empezar, dale <b>Play</b> a cada contenido.<br>
                         Si el curso tiene varios contenidos, deberás verlos todos para concluirlo.</p>
                 </div>
+                <?php
+                if ($cursoVer->examen == '1' && $totalContenidos == $contenidosFinalizados && $asignaciones->estado_aprob != 'A') { ?>
+                    <a href="rendirexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                        <button class="btn-rendir-examen">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zM21.41 6.34a1.25 1.25 0 0 0 0-1.77l-2-2a1.25 1.25 0 0 0-1.77 0l-1.83 1.83 3.75 3.75 1.85-1.81z" />
+                            </svg>
+                            Rendir Examen
+                        </button>
+                    </a>
+                <?php } ?>
                 <table class="formulario diseño_tablas">
                     <tr>
                         <th width=10%>Id</th>

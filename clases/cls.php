@@ -765,7 +765,6 @@ class PROGRESO extends Master
         'id_particip',
         'id_content',
         'estado_progress',
-        'nota',
         'fecha_hora_inicio',
         'fecha_hora_fin'
     ];
@@ -775,7 +774,6 @@ class PROGRESO extends Master
     public $id_particip;
     public $id_content;
     public $estado_progress;
-    public $nota;
     public $fecha_hora_inicio;
     public $fecha_hora_fin;
     public $contar;
@@ -789,7 +787,6 @@ class PROGRESO extends Master
         $this->id_particip = $args['id_particip'] ?? '';
         $this->id_content = $args['id_content'] ?? '';
         $this->estado_progress = $args['estado_progress'] ?? '';
-        $this->nota = $args['nota'] ?? '';
         $this->fecha_hora_inicio = $args['fecha_hora_inicio'] ?? '';
         $this->fecha_hora_fin = $args['fecha_hora_fin'] ?? '';
         $this->contar = $args['contar'] ?? '';
@@ -834,6 +831,16 @@ class PROGRESO extends Master
         $result = self::consultarSQL($qry);
 
         return array_shift($result);
+    }    
+
+    //U -> Eliminar PROGRESO para reiniciar Curso:
+    public function elimProgreso($id_curso, $id_particip)
+    {
+        $qry = "DELETE progreso
+        FROM progreso 
+        INNER JOIN contenidos ON progreso.id_content = contenidos.id_content
+        WHERE id_curso='$id_curso' AND id_particip='$id_particip'";
+        self::$db->query($qry);
     }
 
     //U -> Eliminar PROGRESO de participante 0 (administrador de la plataforma):
@@ -905,7 +912,10 @@ class ASIGNACIONES extends Master
     protected static $columnaDB = [
         'id_particip',
         'id_curso',
-        'fecha_asign'
+        'fecha_asign',
+        'estado_aprob',
+        'intentos',
+        'nota'
     ];
 
     //Declarando las variables del objeto
@@ -913,6 +923,9 @@ class ASIGNACIONES extends Master
     public $id_particip;
     public $id_curso;
     public $fecha_asign;
+    public $estado_aprob;
+    public $intentos;
+    public $nota;
     public $titulo_curso;
 
     //Construcción del objeto
@@ -923,14 +936,17 @@ class ASIGNACIONES extends Master
         $this->id_particip = $args['id_particip'] ?? '';
         $this->id_curso = $args['id_curso'] ?? '';
         $this->fecha_asign = $args['fecha_asign'] ?? '';
+        $this->estado_aprob = $args['estado_aprob'] ?? '';
+        $this->intentos = $args['intentos'] ?? '';
+        $this->nota = $args['nota'] ?? '';
         $this->titulo_curso = $args['titulo_curso'] ?? '';
     }
 
     //C -> Guardar los datos
     public function crear($id_particip, $id_curso, $fecha_asign)
     {
-        $qry = "INSERT INTO asignaciones (id_particip, id_curso, fecha_asign) 
-                VALUES ($id_particip, $id_curso, '$fecha_asign')";
+        $qry = "INSERT INTO asignaciones (id_particip, id_curso, fecha_asign, estado_aprob, intentos, nota) 
+                VALUES ($id_particip, $id_curso, '$fecha_asign', 'C', '0', NULL)";
         self::$db->query($qry);
     }
 
@@ -954,6 +970,51 @@ class ASIGNACIONES extends Master
         $result = self::consultarSQL($qry);
 
         return array_shift($result);
+    }
+
+    //R -> Listar Asignación por Participante y Curso
+    public static function listarAsignacion($id_particip, $id_curso)
+    {
+        $qry = "SELECT * FROM asignaciones WHERE id_particip = $id_particip AND id_curso = '$id_curso'";
+        $result = self::consultarSQL($qry);
+
+        return array_shift($result);
+    }
+
+
+    //U -> Aprobar Curso asignado:
+    public function aprobarCursoAsig($id_particip, $id_curso)
+    {
+        $qry = "UPDATE asignaciones SET estado_aprob='A' WHERE id_particip='$id_particip' AND id_curso='$id_curso'";
+        self::$db->query($qry);
+    }
+
+    //U -> Reprobar Curso asignado:
+    public function reprobarCursoAsig($id_particip, $id_curso)
+    {
+        $qry = "UPDATE asignaciones SET estado_aprob='R' WHERE id_particip='$id_particip' AND id_curso='$id_curso'";
+        self::$db->query($qry);
+    }
+
+    //U -> Reprobar Curso asignado:
+    public function reempezarCursoAsig($id_particip, $id_curso)
+    {
+        $qry = "UPDATE asignaciones SET estado_aprob='C' WHERE id_particip='$id_particip' AND id_curso='$id_curso'";
+        self::$db->query($qry);
+    }
+
+    //U -> Actualizar Intentos:
+    public function intentosCursoAsig($intentos, $id_asign)
+    {
+        $qry = "UPDATE asignaciones SET intentos='$intentos' WHERE id_asign='$id_asign'";
+        self::$db->query($qry);
+    }
+
+    //U -> Asignar Nota:
+    public function nota($nota, $id_curso, $id_particip)
+    {
+        $qry = "UPDATE asignaciones SET nota='$nota' WHERE id_curso='$id_curso' AND id_particip='$id_particip'";
+        self::$db->query($qry);
     }
 
     //U -> Eliminar ASIGNACION:
@@ -1085,7 +1146,8 @@ class EXAMEN_PREGUNTAS extends Master
         self::$db->query($qry);
     }
 
-    public function eliminarExamen($id_curso) {
+    public function eliminarExamen($id_curso)
+    {
         // Eliminar respuestas primero
         $qry1 = "DELETE respuestas
                  FROM respuestas 

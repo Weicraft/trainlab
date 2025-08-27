@@ -1,0 +1,96 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+.instrucciones-examen {
+  font-family: Arial, sans-serif;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+
+  p {
+    color: #555;
+    line-height: 1.6;
+
+    &.exito {
+      text-align: center;
+      color: #333;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  }
+
+  ol {
+    line-height: 1.6;
+    color: #555;
+
+    li {
+      margin-bottom: 0.8em;
+
+      strong {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.resultado-final-examen {
+  font-family: 'Inter', Arial, sans-serif;
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  color: #333;
+  transition: background 0.3s ease;
+
+  .titulo-resultado-final {
+    font-size: 2rem;
+    margin-bottom: 22px;
+  }
+
+  .detalle-estadisticas-final {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 18px;
+
+    p {
+      margin: 6px 0;
+      font-size: 1.5rem;
+    }
+  }
+
+  .mensaje-intentos-final {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: v.$rojo;
+  }
+
+  &.Aprobado {
+    background-color: #c8e6c9; // verde pastel
+    border: 1px solid #95d5a1;
+    color: #1b5e20;
+
+    .detalle-estadisticas-final {
+      background-color: rgba(200, 230, 201, 0.6);
+    }
+  }
+
+  &.Reprobado {
+    background-color: #f8bbd0; // rojo pastel
+    border: 1px solid #f28fa3;
+    color: #880e4f;
+
+    .detalle-estadisticas-final {
+      background-color: rgba(248, 187, 208, 0.6);
+    }
+  }
+}

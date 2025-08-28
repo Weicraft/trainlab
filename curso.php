@@ -99,6 +99,10 @@ $examen = EXAMEN_PREGUNTAS::listarExamenCurso($id_curso);
                             }; ?>
                         </td>
                     </tr>
+                    <tr>
+                        <th>Validez del Certificado:</th>
+                        <td><?php echo $cursoVer->validez_cert; ?></td>
+                    </tr>
                 </table>
             </div>
             <div class="flex">

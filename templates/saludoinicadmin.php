@@ -4,7 +4,18 @@
 
 ?>
 <div class="object-center margin-left margin-right">
-    <div><p>Bienvenido, <span><?php echo $name; ?></span></p>
+    <div>
+    <table>
+        <tr>
+            <td rowspan="3"><img src="build/img/logo.png" alt="logo" class="logo-saludo"></td>
+        </tr>
+        <tr>
+            <td><div class="saludo">Bienvenido, <?php echo $name; ?></div></td>
+        </tr>
+        <tr>
+            <td><div class="saludo-empresa"><?php echo $nombre_empresa; ?></div></td>
+        </tr>
+    </table>    
     </div>
     <div class="object-right">
         <a href="gestUser.php" class="btn-gestion margin-right">

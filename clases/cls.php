@@ -224,6 +224,111 @@ class USERS extends Master
     }
 }
 
+class EMPRESA extends Master
+{
+
+    //Arreglo pamodo_fact y U
+    protected static $columnaDB = [
+        'nombre_empresa',
+        'certificador',
+        'cargo_certificador',
+        'prefijo'
+    ];
+
+    //Declarando las variables del objeto
+    public $id_empresa;
+    public $nombre_empresa;
+    public $certificador;
+    public $cargo_certificador;
+    public $prefijo;
+
+    //Construcción del objeto
+    public function __construct($args = [])
+    {
+
+        $this->id_empresa = $args['id_user'] ?? '';
+        $this->nombre_empresa = $args['nombre_empresa'] ?? '';
+        $this->certificador = $args['certificador'] ?? '';
+        $this->cargo_certificador = $args['cargo_certificador'] ?? '';
+        $this->prefijo = $args['prefijo'] ?? '';
+    }
+
+    //R -> Listar EMRPRESA
+    public static function listarEmpresa()
+    {
+        $qry = "SELECT * FROM empresa WHERE id_empresa = '1'";
+        $result = self::consultarSQL($qry);
+
+        return array_shift($result);
+    }
+
+    //U -> Actualizar datos del USER:
+    public function editEmpresa(
+        $nombre_empresa,
+        $certificador,
+        $cargo_certificador,
+        $prefijo
+    ) {
+        $qry = "UPDATE empresa SET nombre_empresa='$nombre_empresa', certificador='$certificador', cargo_certificador = '$cargo_certificador', prefijo = '$prefijo'
+        WHERE id_emrpesa='1'";
+        self::$db->query($qry);
+    }
+
+    //Identificar y unir los atributos de la BD
+    public function atributos()
+    {
+        $atributos = [];
+        foreach (self::$columnaDB as $columna) {
+            if ($columna === 'id_empresa') continue;
+            $atributos[$columna] = $this->$columna;
+        }
+        return $atributos;
+    }
+
+    //Traer los datos de la BD
+    public static function consultarSQL($qry)
+    {
+        //Consultar la base de datos
+        $result = self::$db->query($qry);
+
+        //Iterar la base de datos
+        $array = [];
+        while ($registro = $result->fetch_assoc()) {
+            $array[] = self::crearObjeto($registro);
+        }
+        //Liberar la memoria
+        $result->free();
+
+        //Retornar los resultados
+        return $array;
+    }
+
+    //Creación del objeto
+    protected static function crearObjeto($registro)
+    {
+        $objeto = new self;
+
+        foreach ($registro as $key => $value) {
+            if (property_exists($objeto, $key)) {
+                $objeto->$key = $value;
+            }
+        }
+
+        return $objeto;
+    }
+
+    //Sanitizar los datos
+    public function sanitizarAtributos()
+    {
+        $atributos = $this->atributos();
+        $sanitizado = [];
+        foreach ($atributos as $key => $value) {
+            $sanitizado[$key] = self::$db->escape_string($value);
+        }
+        return $sanitizado;
+    }
+}
+
 class CURSOS extends Master
 {
 
@@ -235,7 +340,7 @@ class CURSOS extends Master
         'fecha_creacion',
         'fecha_actualizacion',
         'examen',
-        'estado_curso_activ'
+        'validez_cert'
     ];
 
     //Declarando las variables del objeto
@@ -247,6 +352,7 @@ class CURSOS extends Master
     public $fecha_actualizacion;
     public $examen;
     public $estado_curso_activ;
+    public $validez_cert;
 
     //Construcción del objeto
     public function __construct($args = [])
@@ -260,13 +366,14 @@ class CURSOS extends Master
         $this->fecha_actualizacion = $args['fecha_actualizacion'] ?? '';
         $this->examen = $args['examen'] ?? '';
         $this->estado_curso_activ = $args['estado_curso_activ'] ?? '';
+        $this->validez_cert = $args['validez_cert'] ?? '';
     }
 
     //C -> Guardar los datos
-    public function crear($titulo_curso, $descripcion, $tipo_curso, $fecha_creacion, $examen)
+    public function crear($titulo_curso, $descripcion, $tipo_curso, $fecha_creacion, $examen, $validez_cert)
     {
-        $qry = "INSERT INTO cursos (titulo_curso, descripcion, tipo_curso, fecha_creacion, fecha_actualizacion, examen, estado_curso_activ)
-        VALUES ('$titulo_curso', '$descripcion', '$tipo_curso', '$fecha_creacion', NULL, '$examen', 'A')";
+        $qry = "INSERT INTO cursos (titulo_curso, descripcion, tipo_curso, fecha_creacion, fecha_actualizacion, examen, estado_curso_activ, validez_cert)
+        VALUES ('$titulo_curso', '$descripcion', '$tipo_curso', '$fecha_creacion', NULL, '$examen', 'A', '$validez_cert')";
         self::$db->query($qry);
     }
 
@@ -295,10 +402,11 @@ class CURSOS extends Master
         $descripcion,
         $fecha_creacion,
         $tipo_curso,
-        $examen
+        $examen,
+        $validez_cert
     ) {
         $qry = "UPDATE cursos SET titulo_curso='$titulo_curso', descripcion='$descripcion', fecha_creacion='$fecha_creacion', tipo_curso='$tipo_curso', 
-        examen = '$examen' WHERE id_curso='$id_curso'";
+        examen = '$examen', validez_cert = '$validez_cert' WHERE id_curso='$id_curso'";
         self::$db->query($qry);
     }
 
@@ -658,7 +766,7 @@ class CONTENIDOS extends Master
         return $result;
     }
 
-    //R -> Listar CCONTENIDO por ID
+    //R -> Listar CONTENIDO por ID
     public static function listarContenidoId($id_content)
     {
         $qry = "SELECT * FROM contenidos WHERE id_content = '$id_content' AND estado_content_activ = 'A'";
@@ -667,7 +775,7 @@ class CONTENIDOS extends Master
         return array_shift($result);
     }
 
-    //R -> Listar CCONTENIDO por ID
+    //R -> Listar último CONTENIDO
     public static function listarUltimoContenido()
     {
         $qry = "SELECT * FROM contenidos ORDER BY id_content DESC LIMIT 1;";
@@ -915,7 +1023,8 @@ class ASIGNACIONES extends Master
         'fecha_asign',
         'estado_aprob',
         'intentos',
-        'nota'
+        'nota',
+        'fecha_fin'
     ];
 
     //Declarando las variables del objeto
@@ -927,6 +1036,7 @@ class ASIGNACIONES extends Master
     public $intentos;
     public $nota;
     public $titulo_curso;
+    public $fecha_fin;
 
     //Construcción del objeto
     public function __construct($args = [])
@@ -940,13 +1050,14 @@ class ASIGNACIONES extends Master
         $this->intentos = $args['intentos'] ?? '';
         $this->nota = $args['nota'] ?? '';
         $this->titulo_curso = $args['titulo_curso'] ?? '';
+        $this->fecha_fin = $args['fecha_fin'] ?? '';
     }
 
     //C -> Guardar los datos
     public function crear($id_particip, $id_curso, $fecha_asign)
     {
-        $qry = "INSERT INTO asignaciones (id_particip, id_curso, fecha_asign, estado_aprob, intentos, nota) 
-                VALUES ($id_particip, $id_curso, '$fecha_asign', 'C', '0', NULL)";
+        $qry = "INSERT INTO asignaciones (id_particip, id_curso, fecha_asign, estado_aprob, intentos, nota, fecha_fin) 
+                VALUES ($id_particip, $id_curso, '$fecha_asign', 'C', '0', NULL, NULL)";
         self::$db->query($qry);
     }
 
@@ -983,9 +1094,9 @@ class ASIGNACIONES extends Master
 
 
     //U -> Aprobar Curso asignado:
-    public function aprobarCursoAsig($id_particip, $id_curso)
+    public function aprobarCursoAsig($id_particip, $id_curso, $fecha_fin)
     {
-        $qry = "UPDATE asignaciones SET estado_aprob='A' WHERE id_particip='$id_particip' AND id_curso='$id_curso'";
+        $qry = "UPDATE asignaciones SET estado_aprob='A', fecha_fin = '$fecha_fin' WHERE id_particip='$id_particip' AND id_curso='$id_curso'";
         self::$db->query($qry);
     }
 
@@ -1280,6 +1391,135 @@ class EXAMEN_RESPUESTAS extends Master
         $atributos = [];
         foreach (self::$columnaDB as $columna) {
             if ($columna === 'id_pregunta') continue;
+            $atributos[$columna] = $this->$columna;
+        }
+        return $atributos;
+    }
+
+    //Traer los datos de la BD
+    public static function consultarSQL($qry)
+    {
+        //Consultar la base de datos
+        $result = self::$db->query($qry);
+
+        //Iterar la base de datos
+        $array = [];
+        while ($registro = $result->fetch_assoc()) {
+            $array[] = self::crearObjeto($registro);
+        }
+        //Liberar la memoria
+        $result->free();
+
+        //Retornar los resultados
+        return $array;
+    }
+
+    //Creación del objeto
+    protected static function crearObjeto($registro)
+    {
+        $objeto = new self;
+
+        foreach ($registro as $key => $value) {
+            if (property_exists($objeto, $key)) {
+                $objeto->$key = $value;
+            }
+        }
+
+        return $objeto;
+    }
+
+    //Sanitizar los datos
+    public function sanitizarAtributos()
+    {
+        $atributos = $this->atributos();
+        $sanitizado = [];
+        foreach ($atributos as $key => $value) {
+            $sanitizado[$key] = self::$db->escape_string($value);
+        }
+        return $sanitizado;
+    }
+}
+
+class CERTIFICADOS extends Master
+{
+
+    //Arreglo pamodo_fact y U
+    protected static $columnaDB = [
+        'id_particip',
+        'id_curso',
+        'cod_cert',
+        'fecha_emision'
+    ];
+
+    //Declarando las variables del objeto
+    public $id_cert;
+    public $id_particip;
+    public $id_curso;
+    public $cod_cert;
+    public $fecha_emision;
+
+    //Construcción del objeto
+    public function __construct($args = [])
+    {
+
+        $this->id_cert = $args['id_cert'] ?? '';
+        $this->id_particip = $args['id_particip'] ?? '';
+        $this->id_curso = $args['id_curso'] ?? '';
+        $this->cod_cert = $args['cod_cert'] ?? '';
+        $this->fecha_emision = $args['fecha_emision'] ?? '';
+    }
+
+    //C -> Guardar los datos
+    public function crear($id_particip, $id_curso, $cod_cert, $fecha_emision)
+    {
+        $qry = "INSERT INTO certificados (id_particip, id_curso, cod_cert, fecha_emision)
+        VALUES ('$id_particip', '$id_curso', '$cod_cert', '$fecha_emision')";
+        self::$db->query($qry);
+    }
+
+    //R -> Listar CERTIFICADOS
+    public static function listarCertificados()
+    {
+        $qry = "SELECT * FROM certificados ORDER BY id_cert DESC";
+        $result = self::consultarSQL($qry);
+
+        return $result;
+    }
+
+    //R -> Listar último CERTIFICADO:
+    public static function listarUltimoCertificado()
+    {
+        $qry = "SELECT * FROM certificados ORDER BY id_cert DESC LIMIT 1";
+        $result = self::consultarSQL($qry);
+
+        return array_shift($result);
+    }
+
+    //R -> Listar CERTIFICADOS por ID
+    public static function listarCertificadoId($id_cert)
+    {
+        $qry = "SELECT * FROM certificados WHERE id_cert = '$id_cert'";
+        $result = self::consultarSQL($qry);
+
+        return array_shift($result);
+    }
+
+    
+    //R -> Listar CERTIFICADOS por participate y curso
+    public static function listarCertificadoPartCurso($id_particip, $id_curso)
+    {
+        $qry = "SELECT * FROM certificados WHERE id_particip = '$id_particip' AND id_curso = '$id_curso'";
+        $result = self::consultarSQL($qry);
+
+        return array_shift($result);
+    }
+
+    //Identificar y unir los atributos de la BD
+    public function atributos()
+    {
+        $atributos = [];
+        foreach (self::$columnaDB as $columna) {
+            if ($columna === 'id_certific') continue;
             $atributos[$columna] = $this->$columna;
         }
         return $atributos;

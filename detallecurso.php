@@ -28,7 +28,7 @@ CONTENIDOS::setDB($db);
 $cursoVer = CURSOS::listarCursoId($id_curso);
 $contenidos = CONTENIDOS::listarContenidoCurso($id_curso);
 $asignaciones = ASIGNACIONES::listarAsignacion($id_particip, $id_curso);
-
+$fecha_fin = date("Y-m-d H:i:s");
 
 foreach ($contenidos as $contenido) :
     $contarTotalContenidos = CONTENIDOS::contarContenidos($contenido->id_curso);
@@ -37,9 +37,9 @@ foreach ($contenidos as $contenido) :
     $totalContenidos = $contarTotalContenidos->contarContenidos;
     $contenidosIniciados = $contarContenidosIniciados->contarProgreso;
     $contenidosFinalizados = $contarContenidosFinalados->contarProgreso;
-    if($cursoVer->examen == '0' && $totalContenidos == $contenidosFinalizados) {
+    if ($cursoVer->examen == '0' && $totalContenidos == $contenidosFinalizados && $asignaciones->estado_aprob != 'A') {
         $aprobarCurso = new ASIGNACIONES();
-        $aprobarCurso->aprobarCursoAsig($id_particip, $id_curso);
+        $aprobarCurso->aprobarCursoAsig($id_particip, $id_curso, $fecha_fin);
     }
 endforeach;
 //$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('4', $id_user);
@@ -90,7 +90,11 @@ endforeach;
 
                     <div class="tl-cert-actions">
                         <!-- reemplaza href con tu link -->
-                        <a class="tl-cert-btn" href="#" download>Ver certificado</a>
+                        <form method="POST" action="certificado.php" target="_blank">
+                            <input type="hidden" name="id_curso" value="<?php echo $id_curso; ?>">
+                            <input type="hidden" name="indice" value="<?php echo $indice; ?>">
+                            <input type="submit" class="tl-cert-btn" value="Ver certificado">
+                        </form>
                     </div>
                 </div>
             <?php } ?>

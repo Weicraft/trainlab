@@ -39,6 +39,7 @@ $preguntas = EXAMEN_PREGUNTAS::listarExamenCurso($id_curso);
 $participante = PARTICIPANTES::listarParticipanteId($id_particip);
 $asignacionCurso = ASIGNACIONES::listarAsignacion($id_particip, $id_curso);
 $id_asign = $asignacionCurso->id_asign;
+$fecha_fin = date("Y-m-d H:i:s");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $respuestas_correctas = 0;
@@ -76,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if($estado_examen == 'Aprobado') {
         $aprobarCurso = new ASIGNACIONES();
-        $aprobarCurso->aprobarCursoAsig($id_particip, $id_curso);
+        $aprobarCurso->aprobarCursoAsig($id_particip, $id_curso, $fecha_fin);
     } elseif($estado_examen == 'Reprobado') {
         $reprobarCurso = new ASIGNACIONES();
         $reprobarCurso->reprobarCursoAsig($id_particip, $id_curso);

@@ -30,5 +30,5 @@ $qry = "UPDATE progreso SET estado_progress = '$estado', fecha_hora_fin = '$fech
     if (!$result) {
         die('Query failed');
    }
-
+  
 http_response_code(200);

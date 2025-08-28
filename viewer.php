@@ -89,7 +89,15 @@ $pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . 
                                 </svg>
                             </button>
                         </div>
-                        <div id="completado">✅ Video completado. ¡Felicidades!</div>
+                        <div id="completado">
+                            <div class="flex">
+                                ✅ Video completado. ¡Felicidades!
+                                <div class="cont-boton">
+                                    <a href="detallecurso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><input class="boton-grabar" type="submit" value="Cerrar"></a>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="margin-top">
                         </div>
                     </div>
@@ -108,7 +116,14 @@ $pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . 
                         </div>
                         <div class="margin-top">
                         </div>
-                        <div id="completado">✅ Presentación completada. ¡Felicidades!</div>
+                        <div id="completado">
+                            <div class="flex">
+                                ✅ Presentación completada. ¡Felicidades!
+                                <div class="cont-boton">
+                                    <a href="detallecurso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><input class="boton-grabar" type="submit" value="Cerrar"></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 <?php } ?>
             </div>

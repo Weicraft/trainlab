@@ -1,5 +1,6 @@
 @use 'variables' as v;
 @use 'mixins' as m;
+
 html {
     font-size: 62.5%;
     box-sizing: border-box;
@@ -33,6 +34,7 @@ li {
     width: 95%;
     max-width: 1200px;
     margin: 0 auto;
+
     a {
         text-decoration: none !important;
     }
@@ -65,6 +67,7 @@ h1 {
 
 h2 {
     font-size: 2.1rem;
+
     @include m.tablet {
         font-size: 2.4rem;
     }
@@ -72,103 +75,125 @@ h2 {
 
 h3 {
     font-size: 1.9rem;
+
     @include m.tablet {
         font-size: 2.2rem;
     }
+
     font-weight: v.$regular;
 }
 
 p {
     font-size: 1.2rem;
+
     @include m.tablet {
         font-size: 1.5rem;
     }
 }
 
+.saludo {
+    font-size: 1.3rem;
+}
+
+.saludo-empresa {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.logo-saludo {
+    margin-right: 0.8rem;
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
 .principal {
-     margin: 1rem 1.5rem 2rem 1rem;
+    margin: 1rem 1.5rem 2rem 1rem;
 }
 
 .boton {
-  background-color: v.$background;
-  color: v.$tercer_color; // nuevo color de texto
-  padding: 1rem 2.5rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  border: 1px solid v.$color_princ;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  transition: all 0.25s ease;
-  font-family: 'Poppins', sans-serif;
+    background-color: v.$background;
+    color: v.$tercer_color; // nuevo color de texto
+    padding: 1rem 2.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border: 1px solid v.$color_princ;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: 'Poppins', sans-serif;
 
-  &:hover {
-    background-color: v.$color_sec;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-1px);
-  }
+    &:hover {
+        background-color: v.$color_sec;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-1px);
+    }
 
-  &:active {
-    transform: scale(0.97);
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
-  }
+    &:active {
+        transform: scale(0.97);
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+    }
 }
 
 .btn-gestion {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #8B0000, #A52A2A); // granate oscuro a rojizo
-  color: #ffffff; // texto blanco
-  padding: 8px 18px;
-  border-radius: 0.6rem;
-  font-size: 15px;
-  font-weight: bold;
-  text-decoration: none;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-  transition: all 0.25s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #8B0000, #A52A2A); // granate oscuro a rojizo
+    color: #ffffff; // texto blanco
+    padding: 8px 18px;
+    border-radius: 0.6rem;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    transition: all 0.25s ease-in-out;
 
-  svg {
-    stroke: #ffffff; // íconos en blanco también
-  }
+    svg {
+        stroke: #ffffff; // íconos en blanco también
+    }
 
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(135deg, #A52A2A, #B22222); // hover más claro/rojizo
-  }
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(135deg, #A52A2A, #B22222); // hover más claro/rojizo
+    }
 }
 
 .btn-logout {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background-color: #f8d7da; /* Pastel rojo/rosa */
-  color: #721c24; /* Texto más oscuro */
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f8d7da;
+    /* Pastel rojo/rosa */
+    color: #721c24;
+    /* Texto más oscuro */
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-logout svg {
-  width: 18px;
-  height: 18px;
+    width: 18px;
+    height: 18px;
 }
 
 .btn-logout:hover {
-  background-color: #f1b0b7; /* Un poco más oscuro al pasar el mouse */
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    background-color: #f1b0b7;
+    /* Un poco más oscuro al pasar el mouse */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .btn-logout:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .boton-agregar {
@@ -207,7 +232,7 @@ p {
 .boton-examen {
     background-color: #6fd28e; // verde pastel suave
     color: #ffffff; // texto blanco
-    border: 1px solid #5bb97a; 
+    border: 1px solid #5bb97a;
     padding: 0.7rem 1.6rem;
     font-size: 1.1rem;
     font-weight: 600;
@@ -238,58 +263,58 @@ p {
 }
 
 .ver-examen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.05rem; // casi pegado, mínima separación
-  cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.05rem; // casi pegado, mínima separación
+    cursor: pointer;
 }
 
 .texto-examen {
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
-  color: #333333;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333333;
 }
 
 .icono-examen {
-  width: 48px;
-  height: 48px;
+    width: 48px;
+    height: 48px;
 }
 
 .btn-rendir-examen {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, #6ea0ff, #4f85e3); // azul pastel más saturado
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-
-  .icon {
-    width: 20px;
-    height: 20px;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover {
-    background: linear-gradient(135deg, #4f85e3, #6ea0ff);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #6ea0ff, #4f85e3); // azul pastel más saturado
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
     .icon {
-      transform: rotate(-15deg);
+        width: 20px;
+        height: 20px;
+        transition: transform 0.3s ease;
     }
-  }
 
-  &:active {
-    transform: scale(0.98);
-  }
+    &:hover {
+        background: linear-gradient(135deg, #4f85e3, #6ea0ff);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+        .icon {
+            transform: rotate(-15deg);
+        }
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
 }
 
 .boton-ver {
@@ -619,6 +644,48 @@ p {
     }
 }
 
+.btn-certificado {
+    background-color: #fdf4ff; // lila pastel muy suave
+    border: 1px solid #e9d5ff;
+    border-radius: 0.6rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #6b21a8; // lila oscuro
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-family: 'Inter', sans-serif;
+
+    svg {
+        width: 18px;
+        height: 18px;
+        fill: #9333ea; // morado pastel fuerte
+        transition: fill 0.3s ease;
+    }
+
+    &:hover {
+        background-color: #f5e1ff;
+        border-color: #d8b4fe;
+
+        svg {
+            fill: #7e22ce; // más intenso al hover
+        }
+    }
+
+    &:active {
+        transform: scale(0.96);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #c084fc;
+    }
+}
+
 .cont-boton {
     margin-top: 3rem;
     display: flex;
@@ -639,6 +706,7 @@ p {
     color: v.$azul;
     font-size: 1.4rem;
     margin-top: 0.5rem;
+
     &:hover {
         font-style: italic;
         color: v.$negroTransparente;
@@ -735,184 +803,185 @@ p {
 }
 
 .menu-barra {
-  display: flex;
-  justify-content: center;
-  background-color: v.$cuarto_color; /* base muy clara */
-  padding: 12px;
-  border-radius: 12px;
-  margin: 20px auto;
-  max-width: 800px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  gap: 8px;
+    display: flex;
+    justify-content: center;
+    background-color: v.$cuarto_color;
+    /* base muy clara */
+    padding: 12px;
+    border-radius: 12px;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    gap: 8px;
 }
 
 .menu-opcion {
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-  padding: 10px 20px;
-  border-radius: 8px;
-  transition: background 0.3s, transform 0.2s;
-  color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.2s;
+    color: #fff;
 }
 
 .boton1_nav {
-  background-color: #b85c5c; /* lila pastel */
+    background-color: #b85c5c;
+    /* lila pastel */
 }
 
 .boton2_nav {
-  background-color: #8c7c7a; /* verde menta pastel */
+    background-color: #8c7c7a;
+    /* verde menta pastel */
 }
 
 
 .menu-opcion:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.08);
+    transform: translateY(-2px);
+    filter: brightness(1.08);
 }
 
 @media (max-width: 600px) {
-  .menu-barra {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .menu-opcion {
-    width: 100%;
-    text-align: center;
-  }
+    .menu-barra {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu-opcion {
+        width: 100%;
+        text-align: center;
+    }
 }
 
 .custom-file-input {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  padding: 10px 20px;
-  background-color: #f5e9e8; // color pastel
-  color: #555;
-  border: 2px solid #e0cfcf;
-  border-radius: 8px;
-  font-size: 14px;
-  transition: background-color 0.3s;
-  overflow: hidden;
-
-  &:hover {
-    background-color: #f2dcdc;
-  }
-
-  input[type="file"] {
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-    height: 100%;
-    width: 100%;
+    position: relative;
+    display: inline-block;
     cursor: pointer;
-  }
-
-  &::after {
-    content: attr(data-label);
-    display: block;
-    margin-top: 6px;
-    font-size: 12px;
-    color: #888;
-    white-space: nowrap;
+    padding: 10px 20px;
+    background-color: #f5e9e8; // color pastel
+    color: #555;
+    border: 2px solid #e0cfcf;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: background-color 0.3s;
     overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-  }
+
+    &:hover {
+        background-color: #f2dcdc;
+    }
+
+    input[type="file"] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    &::after {
+        content: attr(data-label);
+        display: block;
+        margin-top: 6px;
+        font-size: 12px;
+        color: #888;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
 }
 
 .instruccion {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.8rem 1rem;
-  margin: 1rem 0;
-  border-radius: 0.75rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 .instruccion .icon {
-  font-size: 1.4rem;
-  flex-shrink: 0;
+    font-size: 1.4rem;
+    flex-shrink: 0;
 }
 
 .instruccion.info {
-  background-color: #e7f2fb; /* azul pastel */
-  color: #245d82;
-  border: 1px solid #c4e0f3;
+    background-color: #e7f2fb;
+    /* azul pastel */
+    color: #245d82;
+    border: 1px solid #c4e0f3;
 }
 
 .instruccion.play {
-  background-color: #eaf9ea; /* verde pastel */
-  color: #2e7d32;
-  border: 1px solid #c6eac7;
+    background-color: #eaf9ea;
+    /* verde pastel */
+    color: #2e7d32;
+    border: 1px solid #c6eac7;
 }
 
 .toggle-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: sans-serif;
-  font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: sans-serif;
+    font-weight: bold;
 
-  .label-no {
-    color: #d9534f; // rojo pastel
-  }
+    .label-no {
+        color: #d9534f; // rojo pastel
+    }
 
-  .label-si {
-    color: #5cb85c; // verde pastel
-  }
+    .label-si {
+        color: #5cb85c; // verde pastel
+    }
 }
 
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 30px;
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
 
-  input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #f5e9e8; // pastel por defecto
-    transition: 0.4s;
-    border-radius: 30px;
-
-    &::before {
-      position: absolute;
-      content: "";
-      height: 22px;
-      width: 22px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: 0.4s;
-      border-radius: 50%;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
     }
-  }
 
-  input:checked + .slider {
-    background-color: #b8e0d2; // verde pastel cuando está en SÍ
-  }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #f5e9e8; // pastel por defecto
+        transition: 0.4s;
+        border-radius: 30px;
 
-  input:checked + .slider::before {
-    transform: translateX(30px);
-  }
+        &::before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    input:checked+.slider {
+        background-color: #b8e0d2; // verde pastel cuando está en SÍ
+    }
+
+    input:checked+.slider::before {
+        transform: translateX(30px);
+    }
 }
-
-
-
-

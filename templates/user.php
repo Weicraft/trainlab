@@ -20,4 +20,9 @@
    $name = $user['nombre'];
    $id_user = $user['id_user'];
 
+   $qryEmpresa = "SELECT * FROM empresa WHERE id_empresa = '1'";
+   $result = $db->query($qryEmpresa);
+   $empresa = $result->fetch_assoc();
+   $nombre_empresa = $empresa['nombre_empresa'];
+
    ?>

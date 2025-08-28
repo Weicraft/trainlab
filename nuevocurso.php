@@ -32,6 +32,7 @@ $nuevoCurso = new CURSOS();
 
 $titulo_curso = '';
 $descripcion = '';
+$validez_cert = '';
 $fecha_creacion = date('Y-m-d');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -40,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $examen = $_POST['examen'] ?? null;
     $titulo_curso = mysqli_real_escape_string($db, $_POST['titulo_curso']) ?? null;
     $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']) ?? null;
+    $validez_cert = mysqli_real_escape_string($db, $_POST['validez_cert']) ?? null;
 
     if (!$titulo_curso) {
         $errores[] = 'Debe registrar el nombre del curso o capacitación';
@@ -47,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errores)) {
         //Guardar los datos en BD
-        $nuevoCurso->crear($titulo_curso, $descripcion, $tipo_curso, $fecha_creacion, $examen);
+        $nuevoCurso->crear($titulo_curso, $descripcion, $tipo_curso, $fecha_creacion, $examen, $validez_cert);
         //Redirigir a lista
         header("Location: cursos.php?indice=$indice");
     }
@@ -135,6 +137,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </label>
                                             <span class="label-si">SÍ</span>
                                         </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Validez del Certificado:</td>
+                                <td>
+                                    <div class="input">
+                                        <input type="text" class="field" id="validez_cert" name="validez_cert" value="<?php echo $validez_cert; ?>">
                                     </div>
                                 </td>
                             </tr>

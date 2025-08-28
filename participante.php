@@ -121,6 +121,7 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                             <th>Nombre curso/capacitación</th>
                             <th>Fecha Asignación</th>
                             <th>Estado del curso</th>
+                            <th>Certificado</th>
                             <th>Eliminar Asig.</th>
                         </tr>
                         <?php foreach ($asignaciones as $asignacion) :
@@ -149,6 +150,25 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                                         echo '<div class="verde">Culminado</div>';
                                     }
                                     ?>
+                                </td>
+                                <td>
+                                    <?php if($totalContenidos == $contenidosFinalizados && $asignacion->estado_aprob == 'A') { ?>
+                                    <a href="vercert.php?id_curso=<?php echo $asignacion->id_curso; ?>&particip=<?php echo $id_particip; ?>" target="_blank">
+                                        <button class="btn-certificado">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <rect x="1" y="1" width="22" height="22" rx="6" fill="#f5e1ff" stroke="#e9d5ff" />
+                                                <path d="M8 6h6a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+                                                    stroke="#7e22ce" stroke-width="1.5" stroke-linejoin="round" fill="#ffffff" />
+                                                <path d="M9.5 9.25h6M9.5 11.25h6M9.5 13.25h4"
+                                                    stroke="#7e22ce" stroke-width="1.3" stroke-linecap="round" opacity="0.85" />
+                                                <circle cx="15.5" cy="14.5" r="2.1" fill="#d8b4fe" stroke="#7e22ce" stroke-width="1.2" />
+                                                <path d="M14.4 16.3l-.6 2 1.7-1 1.7 1-.6-2"
+                                                    fill="#c084fc" stroke="#7e22ce" stroke-width="1.1" stroke-linejoin="round" />
+                                                <ellipse cx="12" cy="19.2" rx="6.5" ry="0.9" fill="#000" opacity="0.06" />
+                                            </svg>
+                                        </button>
+                                    </a>
+                                    <?php } ?>
                                 </td>
                                 <td>
                                     <div class="flex-simple-center">

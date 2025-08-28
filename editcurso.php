@@ -41,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo_curso = mysqli_real_escape_string($db, $_POST['titulo_curso']) ?? null;
     $descripcion = mysqli_real_escape_string($db, $_POST['descripcion']) ?? null;
     $fecha_creacion = mysqli_real_escape_string($db, $_POST['fecha_creacion']) ?? null;
+    $validez_cert = mysqli_real_escape_string($db, $_POST['validez_cert']) ?? null;
 
     if (!$titulo_curso) {
         $errores[] = 'Debe registrar el nombre del curso o capacitación';
@@ -53,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $descripcion,
             $fecha_creacion,
             $tipo_curso,
-            $examen
+            $examen,
+            $validez_cert
         );
         //Redirigir a lista
         header("Location: cursos.php?indice=$indice");
@@ -152,6 +154,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </label>
                                             <span class="label-si">SÍ</span>
                                         </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Validez del Certificado:</td>
+                                <td>
+                                    <div class="input">
+                                        <input type="text" class="field" id="validez_cert" name="validez_cert" value="<?php echo $cursoEdit->validez_cert; ?>">
                                     </div>
                                 </td>
                             </tr>

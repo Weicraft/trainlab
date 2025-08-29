@@ -3,7 +3,7 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '2';
+$identificador = '1';
 
 $auth = estaAutenticado();
 $db = conectarDB();
@@ -19,23 +19,8 @@ if ($sesion->estado_sesion != '1') {
     header('location: index.php');
 }
 
-$id_curso = $_GET['id_curso'];
-$indice = $_GET['indice'];
+$plan = $_GET['plan'];
 
-//$destino = asignarDestino($indice, $novelaEnv, $fecha, $capitulo, $id_hpauta);
-
-CURSOS::setDB($db);
-$cursoElim = CURSOS::listarCursoId($id_curso);
-
-$elimCurso = new CURSOS();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $elimCurso->elimCurso($id_curso);
-
-    //Redirigir a lista
-    header("Location: cursos.php?indice=$indice");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,22 +43,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php include 'templates/saludoinic.php'; ?>
     </div>
     <main class="principal">
-        <div class="contenido">
-            <div class="contenedor tablas">
-                <?php include 'templates/barranav.php'; ?>
-                <h2>CURSOS Y CAPACITACIONES</h2>
-                <h3>ELIMINAR CURSO O CAPACITACIÓN</h3>
-                <div class="contenedor">
-                    <form method="POST">
-                        <div class="alerta error">¿Está seguro que desea eliminar el curso/capacitación <?php echo $cursoElim->titulo_curso; ?>?</div>
-                        <div class="cont-boton">
-                            <input class="boton-salir" type="submit" value="Eliminar">
-                    </form>
-                    <a class="boton-grabar" href="cursos.php?indice=<?php echo $indice; ?>">Salir</a>
+        <div class="contenedor body">
+                <div class="margins">
+                    <div class="text-center">
+                        <p class="anulado"><span>-- ALERTA --</span></p>
+                        <p>Tu <span class="anulado"> plan contratado</span> permite la creación de máximo <span class="anulado"><?php echo $plan; ?> usuarios</span></p>
+                        <p>por lo que ya no puedes crear más usuarios.</p>
+                        <p>Si deseas crear más usuarios, por favor comunícate con tu asesor de NiBeL para aumentar tu plan.</p>
+                        <div class="margin-medium-top margin-medium-bottom">
+                            <a href="usuarios.php" class="boton">Volver</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
     </main>
     <?php
     include 'templates/footer.php';

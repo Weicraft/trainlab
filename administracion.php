@@ -3,7 +3,7 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '0';
+$identificador = '1';
 
 $auth = estaAutenticado();
 $db = conectarDB();
@@ -14,7 +14,10 @@ if (!$auth) {
     header('location: index.php');
 }
 
-$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('1', $id_user);
+//Gestión de Sesiones
+if ($sesion->estado_sesion != '1') {
+    header('location: index.php');
+}
 
 ?>
 <!DOCTYPE html>
@@ -35,19 +38,19 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('1', $id_user);
     include 'templates/headerprincipal.php';
     ?>
     <div class="saludo">
-        <?php include 'templates/saludoinicadmin.php'; ?>
+        <?php include 'templates/saludoinicpanelprinc.php'; ?>
     </div>
     <main class="principal">
         <div class="contenido">
             <div class="contenedor panel">
-                <h3>Panel Principal</h3>
+                <h3>Panel de Administración</h3>
                 <div class="contenedor options">
-                    <div class="option capacitaciones">
+                    <div class="option empresa">
                         <div class="negro"></div>
-                        <a href="cursos.php">
-                            <h2>CAPACITACIONES</h2>
+                        <a href="empresa.php">
+                            <h2>Empresa</h2>
                         </a>
-                        <a href="cursos.php"><svg
+                        <a href="empresa.php"><svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="42"
                                 height="42"
@@ -62,12 +65,12 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('1', $id_user);
                             </svg>
                         </a>
                     </div>
-                    <div class="option participantes">
+                    <div class="option usuarios">
                         <div class="negro"></div>
-                        <a href="participantes.php">
-                            <h2>PARTICIPANTES</h2>
+                        <a href="usuarios.php">
+                            <h2>Usuarios</h2>
                         </a>
-                        <a href="participantes.php"><svg
+                        <a href="usuarios.php"><svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="42"
                                 height="42"

@@ -11,8 +11,8 @@
    
    $usr = $_SESSION['user'];
  
-   /*SESIONES::setDB($db);
-   $sesion = SESIONES::listarSesionesPorIdentificacorUsuario($identificador, $usr);*/
+   SESIONES::setDB($db);
+   $sesion = SESIONES::listarSesionesPorIdentificacorUsuario($identificador, $usr) ?? null;
 
    $qryUser = "SELECT * FROM user WHERE id_user = '$usr'";
    $result = $db->query($qryUser);

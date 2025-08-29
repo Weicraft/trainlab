@@ -3,7 +3,7 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '2';
+$identificador = '1';
 
 $auth = estaAutenticado();
 $db = conectarDB();
@@ -20,38 +20,45 @@ if ($sesion->estado_sesion != '1') {
 }
 
 $indice = $_GET['indice'];
-$id_curso = $_GET['id_curso'];
+$id_user = $_GET['id_user'];
 
 //$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
 
-CURSOS::setDB($db);
-CONTENIDOS::setDB($db);
-$curso = CURSOS::listarCursoId($id_curso);
-$ultimoContenido = CONTENIDOS::listarUltimoContenido();
-if($ultimoContenido) {
-$nuevoId = $ultimoContenido->id_content + 1;
-} else {
-    $nuevoId = '1';
-}
-$errores = [];
-$nuevoContenido = new CONTENIDOS();
+USERS::setDB($db);
+$usuarioEdit = USERS::listarUserId($id_user);
 
-$titulo_content = '';
+$errores = [];
+$editUser = new USERS();
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $tipo_content = $_POST['tipo_content'] ?? null;
-    $titulo_content = mysqli_real_escape_string($db, $_POST['titulo_content']) ?? null;
+    $nombre = mysqli_real_escape_string($db, $_POST['nombre']) ?? null;
+    $usuarioN = mysqli_real_escape_string($db, $_POST['usuario']) ?? null;
 
-    if (!$titulo_content) {
-        $errores[] = 'Debe registrar el nombre del contenido';
+    if (!$nombre) {
+        $errores[] = 'Debe registrar el nombre del usuario';
     }
 
-    if (empty($errores)) {
-        //Guardar los datos en BD
-        $nuevoContenido->crear($id_curso, $tipo_content, $titulo_content);
-        //Redirigir a lista
-        header("Location: archivo.php?indice=$indice");
+    if (!$usuarioN) {
+        $errores[] = 'Debe registrar el usuario para el Login';
+    }
+
+    $verifUser = USERS::listarUserUsuario($usuarioN);
+    if ($verifUser && $usuarioN != $usuarioEdit->usuario) {
+        $errores[] = 'El nombre de usuario ya existe. Elija otro';
+    } else {
+
+        if (empty($errores)) {
+            //Guardar los datos en BD
+            $editUser->editUser(
+                $id_user,
+                $nombre,
+                $usuarioN
+            );
+            //Redirigir a lista
+            header("Location: usuarios.php");
+        }
     }
 }
 ?>
@@ -78,9 +85,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main class="principal">
         <div class="contenido">
             <div class="contenedor tablas">
-            <?php include 'templates/barranav.php'; ?>
-                <h2>CURSOS Y CAPACITACIONES</h2>
-                <h3>Agregar nuevo contenido al curso: <span><?php echo $curso->titulo_curso; ?></h3>
+                <?php include 'templates/barranavadmin.php'; ?>
+                <h2>USUARIOS</h2>
+                <h3>Agregar nuevo usuario</h3>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -90,25 +97,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST">
                         <table>
                             <tr>
-                                <td>Nombre del Contenido:</td>
+                                <td>Nombre del usuario:</td>
                                 <td>
-                                    <div class="input">
-                                        <input type="text" class="field" id="titulo_content" name="titulo_content" value="<?php echo $titulo_content; ?>">
+                                    <div class="input align-left">
+                                        <input type="text" class="field" id="nombre" name="nombre" value="<?php echo $usuarioEdit->nombre; ?>">
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Tipo de Contenido:</td>
+                                <td>Usuario:</td>
                                 <td>
-                                    <div class="align-right-column">
-                                        <label class="radio-item">
-                                            <input type="radio" name="tipo_content" value="1" />
-                                            <span>Video</span>
-                                        </label>
-                                        <label class="radio-item">
-                                            <input type="radio" name="tipo_content" value="2" />
-                                            <span>Presentación/Diapositivas</span>
-                                        </label>
+                                    <div class="input align-left">
+                                        <input type="text" class="field" id="usuario" name="usuario" value="<?php echo $usuarioEdit->usuario; ?>">
                                     </div>
                                 </td>
                             </tr>
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="cont-boton">
                             <input class="boton-grabar" type="submit" value="Grabar">
                     </form>
-                    <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-salir" href="usuarios.php">Salir</a>
                 </div>
             </div>
         </div>

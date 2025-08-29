@@ -3,7 +3,7 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '2';
+$identificador = '1';
 
 $auth = estaAutenticado();
 $db = conectarDB();
@@ -14,41 +14,49 @@ if (!$auth) {
     header('location: index.php');
 }
 
+$errores = [];
+
 //Gestión de Sesiones
 if ($sesion->estado_sesion != '1') {
     header('location: index.php');
 }
 
-$indice = $_GET['indice'];
-$id_content = $_GET['id_content'];
-
 //$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
 
-CURSOS::setDB($db);
-CONTENIDOS::setDB($db);
-$contenido = CONTENIDOS::listarContenidoId($id_content);
-$id_curso = $contenido->id_curso;
-$curso = CURSOS::listarCursoId($id_curso);
-$errores = [];
-$editContenido = new CONTENIDOS();
-$archivo = $_FILES['archivo'] ?? null;
-$titulo_content = '';
+EMPRESA::setDB($db);
+$empresa = EMPRESA::listarEmpresa();
+$editEmpresa = new EMPRESA();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $tipo_content = $_POST['tipo_content'] ?? null;
-    $titulo_content = mysqli_real_escape_string($db, $_POST['titulo_content']) ?? null;
+    $nombre_empresa = mysqli_real_escape_string($db, $_POST['nombre_empresa']) ?? null;
+    $certificador = mysqli_real_escape_string($db, $_POST['certificador']) ?? null;
+    $cargo_certificador = mysqli_real_escape_string($db, $_POST['cargo_certificador']) ?? null;
+    $prefijo = mysqli_real_escape_string($db, $_POST['prefijo']) ?? null;
 
-    if (!$titulo_content) {
-        $errores[] = 'Debe registrar el nombre del contenido';
+    if (!$nombre_empresa) {
+        $errores[] = 'Debe registrar el nombre de la empresa';
+    }
+
+    if (!$certificador) {
+        $errores[] = 'Debe registrar el nombre del certificador';
+    }
+
+    if (!$cargo_certificador) {
+        $errores[] = 'Debe registrar el cargo del certificador';
+    }
+
+    if (!$prefijo) {
+        $errores[] = 'Debe registrar un prefijo para generar el código del certificado';
     }
 
     if (empty($errores)) {
         //Guardar los datos en BD
-        $editContenido->editContenido(
-            $id_content,
-            $tipo_content,
-            $titulo_content
+        $editEmpresa->editEmpresa(
+        $nombre_empresa,
+        $certificador,
+        $cargo_certificador,
+        $prefijo
         );
 
         if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] === 0) {
@@ -59,17 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION); // mp4 o pdf
 
-            if ($tipo_content == 1) {
                 // Video
-                $carpeta = 'videos/';
-                $nombre_final = "curso{$id_curso}_contenido{$id_content}.mp4";
-            } elseif ($tipo_content == 2) {
-                // Presentación
-                $carpeta = 'presentaciones/';
-                $nombre_final = "curso{$id_curso}_presentacion{$id_content}.pdf";
-            } else {
-                die("Tipo de contenido inválido.");
-            }
+                $carpeta = 'build/img/';
+                $nombre_final = "logo.png";            
 
             // Asegurar que la carpeta existe
             if (!is_dir($carpeta)) {
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 die("Error al mover el archivo.");
             }
         }
-        header("Location: curso.php?id_curso=$id_curso&indice=$indice");
+        header("Location: empresa.php");
     }
 }
 ?>
@@ -114,9 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main class="principal">
         <div class="contenido">
             <div class="contenedor tablas">
-                <?php include 'templates/barranav.php'; ?>
-                <h2>CURSOS Y CAPACITACIONES</h2>
-                <h3>Editar contenido del curso: <span><?php echo $curso->titulo_curso; ?></h3>
+                <?php include 'templates/barranavadmin.php'; ?>
+                <h2>DATOS DE LA EMPRESA PARA CAPACITACIONES</h2>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -126,48 +125,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST" enctype="multipart/form-data">
                         <table>
                             <tr>
-                                <td>Nombre del Contenido:</td>
+                                <td>Nombre de La empresa:</td>
                                 <td>
                                     <div class="input">
-                                        <input type="text" class="field" id="titulo_content" name="titulo_content" value="<?php echo $contenido->titulo_content; ?>">
+                                        <input type="text" class="field" id="nombre_empresa" name="nombre_empresa" value="<?php echo $empresa->nombre_empresa; ?>">
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Tipo de Contenido:</td>
+                                <td>Certificador:</td>
                                 <td>
-                                    <div class="align-right-column">
-                                        <label class="radio-item">
-                                            <input type="radio" name="tipo_content" value="1" <?php if ($contenido->tipo_content == 1) echo 'checked'; ?>>
-                                            <span>Video</span>
-                                        </label>
-                                        <label class="radio-item">
-                                            <input type="radio" name="tipo_content" value="2" <?php if ($contenido->tipo_content == 2) echo 'checked'; ?>>
-                                            <span>Presentación/Diapositivas</span>
-                                        </label>
+                                    <div class="input">
+                                        <input type="text" class="field" id="certificador" name="certificador" value="<?php echo $empresa->certificador; ?>">
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Contenido</td>
+                                <td>Cargo del Certificador:</td>
                                 <td>
-                                    <?php if ($contenido->tipo_content == '1') { ?>
-                                        <video width="170" height="130" preload="metadata" controls playsinline>
-                                            <source src="videos/<?php echo "curso" . $id_curso . "_contenido" . $id_content . ".mp4"; ?>?t=<?php echo time(); ?>" type="video/mp4">
-                                        </video>
-                                    <?php } else { ?>
-                                        <embed src="presentaciones/<?php echo "curso" . $id_curso . "_presentacion" . $id_content . ".pdf"; ?>?t=<?php echo time(); ?>?&page=1&zoom=80"
-                                            type="application/pdf"
-                                            width="150"
-                                            height="130">
-                                    <?php } ?>
+                                    <div class="input">
+                                        <input type="text" class="field" id="cargo_certificador" name="cargo_certificador" value="<?php echo $empresa->cargo_certificador; ?>">
+                                    </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>Prefijo para Cod. del Certificado:</td>
+                                <td>
+                                    <div class="input">
+                                        <input type="text" class="field" id="prefijo" name="prefijo" value="<?php echo $empresa->prefijo; ?>">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                        <th>Logotipo:</th>
+                        <td><div class="flex-simple-center"><img src="build/img/logo.png" class="logo-saludo" alt=""></div></td>
+                    </tr>
                             <tr>
                                 <td colspan=2>
                                     <div class="input">
                                         <label class="custom-file-input" id="file-label" data-label="Ningún archivo seleccionado">
-                                            Cambiar archivo
+                                            Cambiar logotipo
                                             <input type="file" name="archivo" onchange="mostrarNombre(this)">
                                         </label>
                                     </div>
@@ -177,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="cont-boton">
                             <input class="boton-grabar" type="submit" value="Grabar">
                     </form>
-                    <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-salir" href="empresa.php">Salir</a>
                 </div>
             </div>
         </div>

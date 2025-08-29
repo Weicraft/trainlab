@@ -3,12 +3,8 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '0';
-
 $auth = estaAutenticado();
 $db = conectarDB();
-
-//SESIONES::setDB($db);
 
 if (!$auth) {
     header('location: centro_capacitacion.php');

@@ -3,19 +3,14 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '0';
-
 $auth = estaAutenticado();
 $db = conectarDB();
 
 $id_particip = $_SESSION['particip'];
-$indice = '1';
-//SESIONES::setDB($db);
 
 if (!$auth) {
     header('location: centro_capacitacion.php');
 }
-
 
 //$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
 

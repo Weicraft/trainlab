@@ -270,7 +270,7 @@ class EMPRESA extends Master
         $prefijo
     ) {
         $qry = "UPDATE empresa SET nombre_empresa='$nombre_empresa', certificador='$certificador', cargo_certificador = '$cargo_certificador', prefijo = '$prefijo'
-        WHERE id_emrpesa='1'";
+        WHERE id_empresa='1'";
         self::$db->query($qry);
     }
 
@@ -1520,6 +1520,149 @@ class CERTIFICADOS extends Master
         $atributos = [];
         foreach (self::$columnaDB as $columna) {
             if ($columna === 'id_certific') continue;
+            $atributos[$columna] = $this->$columna;
+        }
+        return $atributos;
+    }
+
+    //Traer los datos de la BD
+    public static function consultarSQL($qry)
+    {
+        //Consultar la base de datos
+        $result = self::$db->query($qry);
+
+        //Iterar la base de datos
+        $array = [];
+        while ($registro = $result->fetch_assoc()) {
+            $array[] = self::crearObjeto($registro);
+        }
+        //Liberar la memoria
+        $result->free();
+
+        //Retornar los resultados
+        return $array;
+    }
+
+    //Creación del objeto
+    protected static function crearObjeto($registro)
+    {
+        $objeto = new self;
+
+        foreach ($registro as $key => $value) {
+            if (property_exists($objeto, $key)) {
+                $objeto->$key = $value;
+            }
+        }
+
+        return $objeto;
+    }
+
+    //Sanitizar los datos
+    public function sanitizarAtributos()
+    {
+        $atributos = $this->atributos();
+        $sanitizado = [];
+        foreach ($atributos as $key => $value) {
+            $sanitizado[$key] = self::$db->escape_string($value);
+        }
+        return $sanitizado;
+    }
+}
+
+class SESIONES extends Master
+{
+
+    //Arreglo para C y U
+    protected static $columnaDB = ['id_orden', 'identificador', 'id_user', 'estado_sesion', 'sesion'];
+
+    //Declarando las variables del objeto
+    public $id_sesion;
+    public $id_orden;
+    public $identificador;
+    public $id_user;
+    public $estado_sesion;
+    public $sesion;
+    //Construcción del objeto
+    public function __construct($args = [])
+    {
+
+        $this->id_sesion = $args['id_sesion'] ?? '';
+        $this->id_orden = $args['id_orden'] ?? '';
+        $this->identificador = $args['identificador'] ?? '';
+        $this->id_user = $args['id_user'] ?? '';
+        $this->estado_sesion = $args['estado_sesion'] ?? '';
+        $this->sesion = $args['sesion'] ?? '';
+    }
+
+    //C -> Crear Sesion
+    public function crearSesion($id_user)
+    {
+
+        $qry = "INSERT INTO sesiones (id_sesion, id_orden, identificador, id_user, estado_sesion, sesion) VALUES
+        ('', 1, 1, '$id_user', 1, 'Módulo de Administración'),
+        ('', 2, 2, '$id_user', 1, 'Crear, editar o eliminar cursos y contenidos'),
+        ('', 3, 3, '$id_user', 1, 'Crear, editar o eliminar examen'),
+        ('', 4, 4, '$id_user', 1, 'Crear, editar o eliminar participantes'),
+        ('', 5, 5, '$id_user', 1, 'Asignar/Desasignar cursos a participantes')";
+        self::$db->query($qry);
+    }
+
+    //R -> Listar Sesiones
+    public static function listarSesiones()
+    {
+        $qry = "SELECT * FROM sesiones
+        ORDER BY id_orden ASC";
+        $result = self::consultarSQL($qry);
+
+        return $result;
+    }
+
+    //R -> Listar Sesiones
+    public static function listarSesionesUsuario($usuario)
+    {
+        $qry = "SELECT * FROM sesiones
+        WHERE id_user = '$usuario'
+        ORDER BY id_orden ASC";
+        $result = self::consultarSQL($qry);
+
+        return $result;
+    }
+
+    //R -> Listar Sesiones por Usuario e identificador
+    public static function listarSesionesPorIdentificacorUsuario($identificador, $usuario)
+    {
+        $qry = "SELECT * FROM sesiones
+        WHERE identificador = '$identificador'
+        AND id_user = '$usuario'";
+        $result = self::consultarSQL($qry);
+
+        return array_shift($result);
+    }
+
+    //U -> Prender Sesión:
+    public function prenderSesion($identificador, $id_user)
+    {
+        $qry = "UPDATE sesiones SET estado_sesion='1'
+         WHERE identificador='$identificador'
+         AND id_user = '$id_user'";
+        self::$db->query($qry);
+    }
+
+    //U -> Apagar Sesión:
+    public function apagarSesiones($id_user)
+    {
+        $qry = "UPDATE sesiones SET estado_sesion='0'
+        WHERE id_user = '$id_user'";
+        self::$db->query($qry);
+    }
+
+
+    //Identificar y unir los atributos de la BD
+    public function atributos()
+    {
+        $atributos = [];
+        foreach (self::$columnaDB as $columna) {
+            if ($columna === 'id_sesion') continue;
             $atributos[$columna] = $this->$columna;
         }
         return $atributos;

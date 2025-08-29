@@ -10,6 +10,18 @@ function togglePasswordVisibility() {
   toggleIcon.textContent = isPassword ? "🔒" : "🔓";
 }
 
+//Script para ver y no ver repetir contraseña
+function togglePassword2Visibility() {
+  const passwordInput = document.getElementById("password2");
+  const toggleIcon = document.querySelector(".toggle-password");
+
+  const isPassword = passwordInput.type === "password";
+  passwordInput.type = isPassword ? "text" : "password";
+
+  // Cambiar ícono (opcional)
+  toggleIcon.textContent = isPassword ? "🔒" : "🔓";
+}
+
 function mostrarNombre(input) {
     const label = document.getElementById('file-label');
     if (input.files.length > 0) {

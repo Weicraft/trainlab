@@ -686,6 +686,64 @@ p {
     }
 }
 
+.password-button {
+    background-color: #e0f7fa; // lila pastel
+    color: #00838f;
+    border: 1px solid #b2ebf2; // borde más oscuro que el fondo
+    border-radius: 0.6rem;
+    padding: 0.2rem 0.4rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(142, 36, 170, 0.15);
+
+    svg {
+        pointer-events: none;
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background-color: #b2ebf2;
+        box-shadow: 0 6px 12px rgba(142, 36, 170, 0.25);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #ce93d8;
+    }
+}
+
+.permission-button {
+    background-color: #fff9c4; // amarillo pastel
+    color: #f9a825; // amarillo oscuro
+    border: 1px solid #fff59d; // borde un poco más oscuro que el fondo
+    border-radius: 0.6rem;
+    padding: 0.2rem 0.4rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(249, 168, 37, 0.15);
+
+    svg {
+        pointer-events: none;
+    }
+
+    &:hover {
+        background-color: #fff59d; // más intenso en hover
+        box-shadow: 0 6px 12px rgba(249, 168, 37, 0.25);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: #fdd835; // amarillo intermedio
+    }
+}
+
 .cont-boton {
     margin-top: 3rem;
     display: flex;
@@ -805,7 +863,7 @@ p {
 .menu-barra {
     display: flex;
     justify-content: center;
-    background-color: v.$cuarto_color;
+    background-color: v.$background;
     /* base muy clara */
     padding: 12px;
     border-radius: 12px;
@@ -835,6 +893,19 @@ p {
     /* verde menta pastel */
 }
 
+.boton3_nav {
+    background-color: #fff0f5;
+    /* lila pastel */
+    color: v.$negro;
+    font-weight: 700;
+}
+
+.boton4_nav {
+    background-color: #f0fff5;
+    /* lila pastel */
+    color: v.$negro;
+    font-weight: 700;
+}
 
 .menu-opcion:hover {
     transform: translateY(-2px);
@@ -984,4 +1055,16 @@ p {
     input:checked+.slider::before {
         transform: translateX(30px);
     }
+}
+
+.obs {
+    margin-top: 0.5rem;
+    color: v.$rojo;
+    font-size: 1.1rem;
+    font-weight: v.$bold;
+}
+
+.anulado {
+    color: v.$rojo;
+    font-weight: v.$bold;
 }

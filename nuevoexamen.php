@@ -3,23 +3,21 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '0 ';
+$identificador = '3';
 
 $auth = estaAutenticado();
 $db = conectarDB();
 
 include 'templates/user.php';
 
-//SESIONES::setDB($db);
-
 if (!$auth) {
     header('location: index.php');
 }
 
 //Gestión de Sesiones
-/*if ($sesion->estado_sesion != '1') {
+if ($sesion->estado_sesion != '1') {
     header('location: index.php');
-}*/
+}
 
 $indice = $_GET['indice'];
 $id_curso = $_GET['id_curso'];

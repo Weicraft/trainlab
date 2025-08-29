@@ -3,23 +3,16 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '0 ';
+$identificador = '0';
 
 $auth = estaAutenticado();
 $db = conectarDB();
 
 include 'templates/user.php';
 
-//SESIONES::setDB($db);
-
 if (!$auth) {
     header('location: index.php');
 }
-
-//Gestión de Sesiones
-/*if ($sesion->estado_sesion != '1') {
-    header('location: index.php');
-}*/
 
 $indice = $_GET['indice'];
 $id_curso = $_GET['id_curso'];
@@ -33,6 +26,8 @@ CONTENIDOS::setDB($db);
 $errores = [];
 $curso = CURSOS::listarCursoId($id_curso);
 $preguntas = EXAMEN_PREGUNTAS::listarExamenCurso($id_curso);
+
+$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user);
 
 ?>
 <!DOCTYPE html>
@@ -64,19 +59,21 @@ $preguntas = EXAMEN_PREGUNTAS::listarExamenCurso($id_curso);
                 <strong>
                     <div class="azul">(En azul la respuesta correcta)</div>
                 </strong>
-                <div class="flex-simple">
-                    <a href="nuevapregunta.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
-                        <button type="button" class="boton-agregar-pregunta" id="agregar-pregunta">Agregar Pregunta</button>
-                    </a>
-                    <a href="elimexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
-                        <button class="boton-eliminar-examen margin-left">
-                            Eliminar Examen
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
-                            </svg>
-                        </button>
-                    </a>
-                </div>
+                <?php if ($sesionSeccion->estado_sesion == '1') { ?>
+                    <div class="flex-simple">
+                        <a href="nuevapregunta.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                            <button type="button" class="boton-agregar-pregunta" id="agregar-pregunta">Agregar Pregunta</button>
+                        </a>
+                        <a href="elimexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                            <button class="boton-eliminar-examen margin-left">
+                                Eliminar Examen
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                                </svg>
+                            </button>
+                        </a>
+                    </div>
+                <?php } ?>
                 <div class="diseño_form formulario">
                     <?php foreach ($preguntas as $pregunta) :
                         $respuestas = EXAMEN_RESPUESTAS::listarRespuestasPregunta($pregunta->id_pregunta); ?>
@@ -85,30 +82,32 @@ $preguntas = EXAMEN_PREGUNTAS::listarExamenCurso($id_curso);
                             <div>
                                 <div class="flex-simple">
                                     <label><strong><?php echo $pregunta->texto_pregunta; ?>:</strong></label>
-                                    <div class="margin-left">
-                                        <a href="editpregunta.php?id_pregunta=<?php echo $pregunta->id_pregunta; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
-                                            <button class="btn-editar" title="Editar">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                    <path d="M12 20h9" />
-                                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
-                                                </svg>
-                                            </button>
-                                        </a>
-                                    </div>
-                                    <div class="margin-left">
-                                        <a href="elimpregunta.php?id_pregunta=<?php echo $pregunta->id_pregunta; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
-                                            <button class="btn-eliminar" title="Eliminar">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    viewBox="0 0 24 24">
-                                                    <polyline points="3 6 5 6 21 6" />
-                                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                                                    <path d="M10 11v6M14 11v6" />
-                                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-                                                </svg>
-                                            </button>
-                                        </a>
-                                    </div>
+                                    <?php if ($sesionSeccion->estado_sesion == '1') { ?>
+                                        <div class="margin-left">
+                                            <a href="editpregunta.php?id_pregunta=<?php echo $pregunta->id_pregunta; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                                <button class="btn-editar" title="Editar">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                        <path d="M12 20h9" />
+                                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+                                                    </svg>
+                                                </button>
+                                            </a>
+                                        </div>
+                                        <div class="margin-left">
+                                            <a href="elimpregunta.php?id_pregunta=<?php echo $pregunta->id_pregunta; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                                <button class="btn-eliminar" title="Eliminar">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        viewBox="0 0 24 24">
+                                                        <polyline points="3 6 5 6 21 6" />
+                                                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                                        <path d="M10 11v6M14 11v6" />
+                                                        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                                                    </svg>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    <?php } ?>
                                 </div>
                                 <br><br>
                                 <?php foreach ($respuestas as $respuesta) : ?>

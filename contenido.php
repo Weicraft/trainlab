@@ -10,8 +10,6 @@ $db = conectarDB();
 
 include 'templates/user.php';
 
-//SESIONES::setDB($db);
-
 if (!$auth) {
     header('location: index.php');
 }

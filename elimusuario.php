@@ -3,7 +3,7 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '2';
+$identificador = '1';
 
 $auth = estaAutenticado();
 $db = conectarDB();
@@ -19,23 +19,20 @@ if ($sesion->estado_sesion != '1') {
     header('location: index.php');
 }
 
-$id_curso = $_GET['id_curso'];
-$indice = $_GET['indice'];
+$id_user = $_GET['id_user'];
 
-//$destino = asignarDestino($indice, $novelaEnv, $fecha, $capitulo, $id_hpauta);
+USERS::setDB($db);
+$usuarioElim = USERS::listarUserId($id_user);
 
-CURSOS::setDB($db);
-$cursoElim = CURSOS::listarCursoId($id_curso);
-
-$elimCurso = new CURSOS();
+$elimUser = new USERS();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $elimCurso->elimCurso($id_curso);
-
+    $elimUser->elimUser($id_user);
     //Redirigir a lista
-    header("Location: cursos.php?indice=$indice");
+    header("Location: usuarios.php");
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,17 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <main class="principal">
         <div class="contenido">
-            <div class="contenedor tablas">
-                <?php include 'templates/barranav.php'; ?>
-                <h2>CURSOS Y CAPACITACIONES</h2>
-                <h3>ELIMINAR CURSO O CAPACITACIÓN</h3>
+            <div class="contenedor panel">
+                <h3>Getión de Usuarios</h3>
                 <div class="contenedor">
                     <form method="POST">
-                        <div class="alerta error">¿Está seguro que desea eliminar el curso/capacitación <?php echo $cursoElim->titulo_curso; ?>?</div>
+                        <div class="alerta error">¿Está seguro que desea eliminar al usuario <?php echo $usuarioElim->usuario; ?>?</div>
                         <div class="cont-boton">
                             <input class="boton-salir" type="submit" value="Eliminar">
                     </form>
-                    <a class="boton-grabar" href="cursos.php?indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-grabar" href="usuarios.php">Salir</a>
                 </div>
             </div>
         </div>

@@ -10,8 +10,6 @@ $db = conectarDB();
 
 include 'templates/user.php';
 
-//SESIONES::setDB($db);
-
 if (!$auth) {
     header('location: index.php');
 }
@@ -29,7 +27,7 @@ $participVer = PARTICIPANTES::listarParticipanteId($id_particip);
 $doi = DOI::listarDocId($participVer->tipo_doc) ?? null;
 $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
 
-//$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('4', $id_user);
+$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user);
 
 ?>
 
@@ -60,19 +58,21 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
             <?php include 'templates/barranav.php'; ?>
             <h2>DETALLE DEL PARTICIPANTE</h2>
             <div class="flex-simple margin-bottom">
-                <h3>Asignar Cursos: </h3><a href="asignaciones.php?id_particip=<?php echo $participVer->id_particip; ?>&indice=<?php echo $indice; ?>">
-                    <button class="btn-asignar" title="Asignar">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <!-- Persona -->
-                            <circle cx="12" cy="7" r="3" stroke="currentColor" fill="none" stroke-width="2" />
-                            <path d="M5 21c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" fill="none" stroke-width="2" />
-                            <!-- Lista / libro -->
-                            <rect x="16" y="10" width="6" height="10" rx="1" ry="1" stroke="currentColor" fill="none" stroke-width="2" />
-                            <line x1="17" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" />
-                            <line x1="17" y1="16" x2="21" y2="16" stroke="currentColor" stroke-width="2" />
-                        </svg>
-                    </button>
-                </a>
+                <?php if ($sesionSeccion->estado_sesion == '1') { ?>
+                    <h3>Asignar Cursos: </h3><a href="asignaciones.php?id_particip=<?php echo $participVer->id_particip; ?>&indice=<?php echo $indice; ?>">
+                        <button class="btn-asignar" title="Asignar">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <!-- Persona -->
+                                <circle cx="12" cy="7" r="3" stroke="currentColor" fill="none" stroke-width="2" />
+                                <path d="M5 21c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" fill="none" stroke-width="2" />
+                                <!-- Lista / libro -->
+                                <rect x="16" y="10" width="6" height="10" rx="1" ry="1" stroke="currentColor" fill="none" stroke-width="2" />
+                                <line x1="17" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" />
+                                <line x1="17" y1="16" x2="21" y2="16" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                        </button>
+                    </a>
+                <?php } ?>
             </div>
             <div class="diseño_tablas">
                 <table>
@@ -122,7 +122,9 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                             <th>Fecha Asignación</th>
                             <th>Estado del curso</th>
                             <th>Certificado</th>
-                            <th>Eliminar Asig.</th>
+                            <?php if ($sesionSeccion->estado_sesion == '1') { ?>
+                                <th>Eliminar Asig.</th>
+                            <?php } ?>
                         </tr>
                         <?php foreach ($asignaciones as $asignacion) :
                             $contarTotalContenidos = CONTENIDOS::contarContenidos($asignacion->id_curso);
@@ -152,40 +154,42 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                                     ?>
                                 </td>
                                 <td>
-                                    <?php if($totalContenidos == $contenidosFinalizados && $asignacion->estado_aprob == 'A') { ?>
-                                    <a href="vercert.php?id_curso=<?php echo $asignacion->id_curso; ?>&particip=<?php echo $id_particip; ?>" target="_blank">
-                                        <button class="btn-certificado">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                <rect x="1" y="1" width="22" height="22" rx="6" fill="#f5e1ff" stroke="#e9d5ff" />
-                                                <path d="M8 6h6a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
-                                                    stroke="#7e22ce" stroke-width="1.5" stroke-linejoin="round" fill="#ffffff" />
-                                                <path d="M9.5 9.25h6M9.5 11.25h6M9.5 13.25h4"
-                                                    stroke="#7e22ce" stroke-width="1.3" stroke-linecap="round" opacity="0.85" />
-                                                <circle cx="15.5" cy="14.5" r="2.1" fill="#d8b4fe" stroke="#7e22ce" stroke-width="1.2" />
-                                                <path d="M14.4 16.3l-.6 2 1.7-1 1.7 1-.6-2"
-                                                    fill="#c084fc" stroke="#7e22ce" stroke-width="1.1" stroke-linejoin="round" />
-                                                <ellipse cx="12" cy="19.2" rx="6.5" ry="0.9" fill="#000" opacity="0.06" />
-                                            </svg>
-                                        </button>
-                                    </a>
-                                    <?php } ?>
-                                </td>
-                                <td>
-                                    <div class="flex-simple-center">
-                                        <a href="elimasignacion.php?id_asign=<?php echo $asignacion->id_asign; ?>&id_particip=<?php echo $id_particip; ?>&indice=<?php echo $indice; ?>">
-                                            <button class="btn-eliminar" title="Eliminar">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    viewBox="0 0 24 24">
-                                                    <polyline points="3 6 5 6 21 6" />
-                                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                                                    <path d="M10 11v6M14 11v6" />
-                                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                                    <?php if ($totalContenidos == $contenidosFinalizados && $asignacion->estado_aprob == 'A') { ?>
+                                        <a href="vercert.php?id_curso=<?php echo $asignacion->id_curso; ?>&particip=<?php echo $id_particip; ?>" target="_blank">
+                                            <button class="btn-certificado">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                    <rect x="1" y="1" width="22" height="22" rx="6" fill="#f5e1ff" stroke="#e9d5ff" />
+                                                    <path d="M8 6h6a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+                                                        stroke="#7e22ce" stroke-width="1.5" stroke-linejoin="round" fill="#ffffff" />
+                                                    <path d="M9.5 9.25h6M9.5 11.25h6M9.5 13.25h4"
+                                                        stroke="#7e22ce" stroke-width="1.3" stroke-linecap="round" opacity="0.85" />
+                                                    <circle cx="15.5" cy="14.5" r="2.1" fill="#d8b4fe" stroke="#7e22ce" stroke-width="1.2" />
+                                                    <path d="M14.4 16.3l-.6 2 1.7-1 1.7 1-.6-2"
+                                                        fill="#c084fc" stroke="#7e22ce" stroke-width="1.1" stroke-linejoin="round" />
+                                                    <ellipse cx="12" cy="19.2" rx="6.5" ry="0.9" fill="#000" opacity="0.06" />
                                                 </svg>
                                             </button>
                                         </a>
-                                    </div>
+                                    <?php } ?>
                                 </td>
+                                <?php if ($sesionSeccion->estado_sesion == '1') { ?>
+                                    <td>
+                                        <div class="flex-simple-center">
+                                            <a href="elimasignacion.php?id_asign=<?php echo $asignacion->id_asign; ?>&id_particip=<?php echo $id_particip; ?>&indice=<?php echo $indice; ?>">
+                                                <button class="btn-eliminar" title="Eliminar">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        viewBox="0 0 24 24">
+                                                        <polyline points="3 6 5 6 21 6" />
+                                                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                                                        <path d="M10 11v6M14 11v6" />
+                                                        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+                                                    </svg>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </td>
+                                <?php } ?>
                             </tr>
                         <?php endforeach; ?>
                     </table>

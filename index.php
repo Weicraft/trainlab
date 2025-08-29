@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //Obtener los datos del usuario
             $usuario = mysqli_fetch_assoc($resultUser);
             //verificación del password
-            $auth = password_verify($password, $usuario['password']);
+            $auth = password_verify($password, $usuario['pass']);
 
             if ($auth) {
                 //El usuario está autenticado

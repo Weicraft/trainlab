@@ -3,7 +3,7 @@ require 'includes/funciones.php';
 require 'includes/config/database.php';
 require 'clases/cls.php';
 
-$identificador = '2';
+$identificador = '1';
 
 $auth = estaAutenticado();
 $db = conectarDB();
@@ -19,41 +19,44 @@ if ($sesion->estado_sesion != '1') {
     header('location: index.php');
 }
 
-$indice = $_GET['indice'];
-$id_curso = $_GET['id_curso'];
+USERS::setDB($db);
 
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
-
-CURSOS::setDB($db);
-CONTENIDOS::setDB($db);
-$curso = CURSOS::listarCursoId($id_curso);
-$ultimoContenido = CONTENIDOS::listarUltimoContenido();
-if($ultimoContenido) {
-$nuevoId = $ultimoContenido->id_content + 1;
-} else {
-    $nuevoId = '1';
-}
 $errores = [];
-$nuevoContenido = new CONTENIDOS();
 
-$titulo_content = '';
+$id_user = $_GET['id_user'];
+
+$usuarioEdit = USERS::listarUserId($id_user);
+
+$editPassword = new USERS();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $tipo_content = $_POST['tipo_content'] ?? null;
-    $titulo_content = mysqli_real_escape_string($db, $_POST['titulo_content']) ?? null;
+    $pass = mysqli_real_escape_string($db, $_POST['pass']) ?? null;
+    $repeatPass = mysqli_real_escape_string($db, $_POST['repeatPass']) ?? null;
 
-    if (!$titulo_content) {
-        $errores[] = 'Debe registrar el nombre del contenido';
+    if (!$pass) {
+        $errores[] = 'Debe ingresar una contraseña';
+    }
+
+    if (!$repeatPass) {
+        $errores[] = 'Debe repetir la contraseña';
+    }
+
+    if ($pass != $repeatPass) {
+        $errores[] = 'Las contraseñas no son iguales';
     }
 
     if (empty($errores)) {
         //Guardar los datos en BD
-        $nuevoContenido->crear($id_curso, $tipo_content, $titulo_content);
+        $editPassword->editPassUser(
+        $id_user,
+        $pass
+    );
         //Redirigir a lista
-        header("Location: archivo.php?indice=$indice");
+        header("Location: usuarios.php");
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,10 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <main class="principal">
         <div class="contenido">
-            <div class="contenedor tablas">
-            <?php include 'templates/barranav.php'; ?>
-                <h2>CURSOS Y CAPACITACIONES</h2>
-                <h3>Agregar nuevo contenido al curso: <span><?php echo $curso->titulo_curso; ?></h3>
+            <div class="contenedor panel">
+                <h3>Agregar nuevo Usuario</h3>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -90,25 +91,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST">
                         <table>
                             <tr>
-                                <td>Nombre del Contenido:</td>
+                                <td>Contraseña:</td>
                                 <td>
                                     <div class="input">
-                                        <input type="text" class="field" id="titulo_content" name="titulo_content" value="<?php echo $titulo_content; ?>">
+                                        <input type="password" class="field" id="password" name="pass">
+                                        <span class="toggle-password" onclick="togglePasswordVisibility()">
+                                            🔓
+                                        </span>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Tipo de Contenido:</td>
+                                <td>Repetir Contraseña:</td>
                                 <td>
-                                    <div class="align-right-column">
-                                        <label class="radio-item">
-                                            <input type="radio" name="tipo_content" value="1" />
-                                            <span>Video</span>
-                                        </label>
-                                        <label class="radio-item">
-                                            <input type="radio" name="tipo_content" value="2" />
-                                            <span>Presentación/Diapositivas</span>
-                                        </label>
+                                    <div class="input">
+                                        <input type="password" class="field" id="password2" name="repeatPass">
+                                        <span class="toggle-password" onclick="togglePassword2Visibility()">
+                                            🔓
+                                        </span>
                                     </div>
                                 </td>
                             </tr>
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="cont-boton">
                             <input class="boton-grabar" type="submit" value="Grabar">
                     </form>
-                    <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-salir" href="usuarios.php">Salir</a>
                 </div>
             </div>
         </div>

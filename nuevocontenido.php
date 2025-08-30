@@ -35,8 +35,10 @@ $nuevoId = $ultimoContenido->id_content + 1;
 }
 $errores = [];
 $nuevoContenido = new CONTENIDOS();
+$actualizarCurso = new CURSOS();
 
 $titulo_content = '';
+$fecha_actualizacion = date('Y-m-d');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -47,9 +49,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores[] = 'Debe registrar el nombre del contenido';
     }
 
+    if (!$tipo_content) {
+        $errores[] = 'Debe elegir el tipo de contenido';
+    }
+
     if (empty($errores)) {
         //Guardar los datos en BD
         $nuevoContenido->crear($id_curso, $tipo_content, $titulo_content);
+        //Agregar fecha de actualización del curso
+        $actualizarCurso->actualizarCurso($id_curso, $fecha_actualizacion);
         //Redirigir a lista
         header("Location: archivo.php?indice=$indice");
     }
@@ -81,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php include 'templates/barranav.php'; ?>
                 <h2>CURSOS Y CAPACITACIONES</h2>
                 <h3>Agregar nuevo contenido al curso: <span><?php echo $curso->titulo_curso; ?></h3>
+                <p class="rojo">(los campos con * son obligatorios)</p>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -90,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST">
                         <table>
                             <tr>
-                                <td>Nombre del Contenido:</td>
+                                <td>* Nombre del Contenido:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="titulo_content" name="titulo_content" value="<?php echo $titulo_content; ?>">
@@ -98,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Tipo de Contenido:</td>
+                                <td>* Tipo de Contenido:</td>
                                 <td>
                                     <div class="align-right-column">
                                         <label class="radio-item">

@@ -1,7 +1,7 @@
 <?php
-require 'includes/funciones.php';
-require 'includes/config/database.php';
-require 'clases/cls.php';
+require '../includes/funciones.php';
+require '../includes/config/database.php';
+require '../clases/cls.php';
 
 $auth = estaAutenticado();
 $db = conectarDB();
@@ -49,20 +49,19 @@ endforeach;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRAINLAB - Centro de Capacitaciones</title>
-    <link rel="icon" href="build/img/favicon_NiBel.png" type="image/x-icon">
+    <link rel="icon" href="../build/img/favicon_NiBel.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="build/js/ajax.js"></script>
-    <?php include 'templates/cssindex.php' ?>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>    
+    <?php include '../templates/csscapacitacion.php' ?>
 </head>
 
 <body>
     <?php
-    include 'templates/headerprincipal.php';
+    include '../templates/headerprincipalcapac.php';
     ?>
     <div class="saludo">
-        <?php include 'templates/saludoparticip.php'; ?>
+        <?php include '../templates/saludoparticip.php'; ?>
     </div>
     <main class="principal">
         <div class="contenedor tablas">
@@ -213,9 +212,9 @@ endforeach;
         </div>
     </main>
     <?php
-    include 'templates/footer.php';
+    include '../templates/footer.php';
     ?>
-    <script src="build/js/bundle.min.js"></script>
+    <script src="../build/js/bundle.min.js"></script>
 </body>
 
 </html>

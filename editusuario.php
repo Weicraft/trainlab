@@ -88,6 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php include 'templates/barranavadmin.php'; ?>
                 <h2>USUARIOS</h2>
                 <h3>Agregar nuevo usuario</h3>
+                <p class="rojo">(los campos con * son obligatorios)</p>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -97,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST">
                         <table>
                             <tr>
-                                <td>Nombre del usuario:</td>
+                                <td>* Nombre del usuario:</td>
                                 <td>
                                     <div class="input align-left">
                                         <input type="text" class="field" id="nombre" name="nombre" value="<?php echo $usuarioEdit->nombre; ?>">
@@ -105,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Usuario:</td>
+                                <td>* Usuario:</td>
                                 <td>
                                     <div class="input align-left">
                                         <input type="text" class="field" id="usuario" name="usuario" value="<?php echo $usuarioEdit->usuario; ?>">

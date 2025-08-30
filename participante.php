@@ -144,7 +144,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user);
                                     <?php
                                     if ($contenidosIniciados == '0' && $contenidosFinalizados == '0') {
                                         echo '<div class="rojo">Sin Iniciar</div>';
-                                    } elseif ($contenidosIniciados != '0' && $totalContenidos > $contenidosFinalizados) {
+                                    } elseif ($contenidosIniciados != '0' || $contenidosFinalizados != '0' && $totalContenidos > $contenidosFinalizados) {
                                         echo '<div class="azul">En curso</div>';
                                     } elseif ($totalContenidos == $contenidosFinalizados && $asignacion->estado_aprob != 'A') {
                                         echo '<div class="naranja">Culminado sin Evaluación</div>';

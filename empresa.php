@@ -76,6 +76,10 @@ $empresa = EMPRESA::listarEmpresa();
                         <th>Logotipo:</th>
                         <td><div class="flex-simple-center"><img src="build/img/logo.png" class="logo-saludo" alt=""></div></td>
                     </tr>
+                    <tr>
+                        <th>Firma digital:</th>
+                        <td><div class="flex-simple-center"><img src="build/img/firma.png" class="firma" alt=""></div></td>
+                    </tr>
                 </table>
                 <div class="obs">* Si has cambiado el logotipo y no se refleja, actualiza la página limpiando la caché con "CTRL + F5" </div>
             </div>            

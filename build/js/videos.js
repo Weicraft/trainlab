@@ -22,7 +22,7 @@ playBtn.addEventListener("click", () => {
     playBtn.textContent = "⏸️";
 
     if (!yaRegistradoInicio) {
-      fetch("backend/registrar_inicio.php", {
+      fetch("../backend/registrar_inicio.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -77,7 +77,7 @@ fullscreenBtn.addEventListener("click", () => {
 // ✅ Finalización
 video.addEventListener("ended", () => {
   completado.style.display = "block";
-  fetch("backend/registrar_fin.php", {
+  fetch("../backend/registrar_fin.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

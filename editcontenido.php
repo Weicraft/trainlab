@@ -31,8 +31,10 @@ $id_curso = $contenido->id_curso;
 $curso = CURSOS::listarCursoId($id_curso);
 $errores = [];
 $editContenido = new CONTENIDOS();
+$actualizarCurso = new CURSOS();
 $archivo = $_FILES['archivo'] ?? null;
 $titulo_content = '';
+$fecha_actualizacion = date('Y-m-d');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -43,6 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores[] = 'Debe registrar el nombre del contenido';
     }
 
+     if (!$tipo_content) {
+        $errores[] = 'Debe elegir el tipo de contenido';
+    }
+
     if (empty($errores)) {
         //Guardar los datos en BD
         $editContenido->editContenido(
@@ -50,6 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tipo_content,
             $titulo_content
         );
+        //Agregar fecha de actualización del curso
+        $actualizarCurso->actualizarCurso($id_curso, $fecha_actualizacion);
 
         if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] === 0) {
             $archivo = $_FILES['archivo'];
@@ -117,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php include 'templates/barranav.php'; ?>
                 <h2>CURSOS Y CAPACITACIONES</h2>
                 <h3>Editar contenido del curso: <span><?php echo $curso->titulo_curso; ?></h3>
+                <p class="rojo">(los campos con * son obligatorios)</p>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -126,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST" enctype="multipart/form-data">
                         <table>
                             <tr>
-                                <td>Nombre del Contenido:</td>
+                                <td>* Nombre del Contenido:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="titulo_content" name="titulo_content" value="<?php echo $contenido->titulo_content; ?>">
@@ -134,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Tipo de Contenido:</td>
+                                <td>* Tipo de Contenido:</td>
                                 <td>
                                     <div class="align-right-column">
                                         <label class="radio-item">
@@ -149,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Contenido</td>
+                                <td>* Contenido</td>
                                 <td>
                                     <?php if ($contenido->tipo_content == '1') { ?>
                                         <video width="170" height="130" preload="metadata" controls playsinline>

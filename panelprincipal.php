@@ -45,7 +45,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('1', $id_user);
                     <div class="option capacitaciones">
                         <div class="negro"></div>
                         <a href="cursos.php">
-                            <h2>CAPACITACIONES</h2>
+                            <h2>CURSOS Y CAPACITACIONES</h2>
                         </a>
                         <a href="cursos.php"><svg
                                 xmlns="http://www.w3.org/2000/svg"

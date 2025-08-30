@@ -53,10 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errores)) {
         //Guardar los datos en BD
         $editEmpresa->editEmpresa(
-        $nombre_empresa,
-        $certificador,
-        $cargo_certificador,
-        $prefijo
+            $nombre_empresa,
+            $certificador,
+            $cargo_certificador,
+            $prefijo
         );
 
         if (isset($_FILES['archivo']) && $_FILES['archivo']['error'] === 0) {
@@ -67,9 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $extension = pathinfo($archivo['name'], PATHINFO_EXTENSION); // mp4 o pdf
 
-                // Video
-                $carpeta = 'build/img/';
-                $nombre_final = "logo.png";            
+            // Video
+            $carpeta = 'build/img/';
+            $nombre_final = "logo.png";
 
             // Asegurar que la carpeta existe
             if (!is_dir($carpeta)) {
@@ -87,6 +87,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 die("Error al mover el archivo.");
             }
         }
+
+        if (isset($_FILES['archivo2']) && $_FILES['archivo2']['error'] === 0) {
+            $archivo2 = $_FILES['archivo2'];
+
+            $carpeta2 = '';
+            $nombre_final2 = '';
+
+            $extension2 = pathinfo($archivo2['name'], PATHINFO_EXTENSION); // mp4 o pdf
+
+            // Video
+            $carpeta2 = 'build/img/';
+            $nombre_final2 = "firma.png";
+
+            // Asegurar que la carpeta existe
+            if (!is_dir($carpeta2)) {
+                mkdir($carpeta2, 0777, true);
+            }
+
+            // Ruta final
+            $ruta_destino2 = $carpeta2 . $nombre_final2;
+
+
+            // Mover el archivo
+            if (move_uploaded_file($archivo2['tmp_name'], $ruta_destino2)) {
+                echo "Archivo subido exitosamente como: $nombre_final2";
+            } else {
+                die("Error al mover el archivo.");
+            }
+        }
+
         header("Location: empresa.php");
     }
 }
@@ -116,6 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="contenedor tablas">
                 <?php include 'templates/barranavadmin.php'; ?>
                 <h2>DATOS DE LA EMPRESA PARA CAPACITACIONES</h2>
+                <p class="rojo">(los campos con * son obligatorios)</p>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -125,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST" enctype="multipart/form-data">
                         <table>
                             <tr>
-                                <td>Nombre de La empresa:</td>
+                                <td>* Nombre de La empresa:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="nombre_empresa" name="nombre_empresa" value="<?php echo $empresa->nombre_empresa; ?>">
@@ -133,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Certificador:</td>
+                                <td>* Certificador:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="certificador" name="certificador" value="<?php echo $empresa->certificador; ?>">
@@ -141,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Cargo del Certificador:</td>
+                                <td>* Cargo del Certificador:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="cargo_certificador" name="cargo_certificador" value="<?php echo $empresa->cargo_certificador; ?>">
@@ -149,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Prefijo para Cod. del Certificado:</td>
+                                <td>* Prefijo para Cod. del Certificado:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="prefijo" name="prefijo" value="<?php echo $empresa->prefijo; ?>">
@@ -157,15 +188,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                        <th>Logotipo:</th>
-                        <td><div class="flex-simple-center"><img src="build/img/logo.png" class="logo-saludo" alt=""></div></td>
-                    </tr>
+                                <th>* Logotipo:</th>
+                                <td>
+                                    <div class="flex-simple-center"><img src="build/img/logo.png" class="logo-saludo" alt=""></div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan=2>
                                     <div class="input">
                                         <label class="custom-file-input" id="file-label" data-label="Ningún archivo seleccionado">
                                             Cambiar logotipo
                                             <input type="file" name="archivo" onchange="mostrarNombre(this)">
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>* Firma digital:</th>
+                                <td>
+                                    <div class="flex-simple-center"><img src="build/img/firma.png" class="firma" alt=""></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan=2>
+                                    <div class="input">
+                                        <label class="custom-file-input" id="file-label2" data-label="Ningún archivo seleccionado">
+                                            Cambiar firma Digital
+                                            <input type="file" name="archivo2" onchange="mostrarNombre(this)">
                                         </label>
                                     </div>
                                 </td>

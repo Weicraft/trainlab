@@ -41,7 +41,7 @@ function renderPage(num) {
 // 👇 Interacciones: registrar inicio en el primer clic
 document.getElementById("next").addEventListener("click", () => {
   if (!yaRegistradoInicio) {
-    fetch("backend/registrar_inicio.php", {
+    fetch("../backend/registrar_inicio.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -60,7 +60,7 @@ document.getElementById("next").addEventListener("click", () => {
 
 document.getElementById("prev").addEventListener("click", () => {
   if (!yaRegistradoInicio) {
-    fetch("backend/registrar_inicio.php", {
+    fetch("../backend/registrar_inicio.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -80,7 +80,7 @@ document.getElementById("prev").addEventListener("click", () => {
 // Botón Finalizar
 document.getElementById("finalizar").addEventListener("click", () => {
   completado.style.display = "block";
-  fetch("backend/registrar_fin.php", {
+  fetch("../backend/registrar_fin.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

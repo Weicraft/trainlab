@@ -1,7 +1,7 @@
 <?php
-require 'includes/funciones.php';
-require 'includes/config/database.php';
-require 'clases/cls.php';
+require '../includes/funciones.php';
+require '../includes/config/database.php';
+require '../clases/cls.php';
 
 $auth = estaAutenticado();
 $db = conectarDB();
@@ -427,7 +427,7 @@ if (!$certExiste) {
           <div class="flex">
             <div class="logo">
               <!-- Logo: reemplaza la src por el logo de tu empresa -->
-              <img src="build/img/logo.png" alt="logo" style="height:40px; width:auto; display:block;">
+              <img src="../build/img/logo.png" alt="logo" style="height:40px; width:auto; display:block;">
             </div>
             <div class="org">
               <div class="name"><?php echo $nombre_empresa; ?></div>
@@ -464,7 +464,7 @@ if (!$certExiste) {
             <div class="small">Firma autorizada</div>
             <div class="sig" style="position:relative; display:flex; align-items:center; justify-content:center;">
               <!-- Imagen de la firma encima de la raya -->
-              <img src="build/img/firma.png" alt="firma" style="position:absolute; top:-28px; width:160px; height:auto;">
+              <img src="../build/img/firma.png" alt="firma" style="position:absolute; top:-28px; width:160px; height:auto;">
             </div>
             <!-- Nombre y cargo de la persona que certifica -->
             <div style="margin-top:40px; text-align:center; font-family:'Montserrat', sans-serif; font-size:14px; font-weight:600; color:var(--title);">
@@ -477,7 +477,7 @@ if (!$certExiste) {
 
 
           <div>
-            <div class="inner"><img src="build/img/medalla.png" width="110px" height="130px" alt=""></div>
+            <div class="inner"><img src="../build/img/medalla.png" width="110px" height="130px" alt=""></div>
           </div>
 
           <div class="right">

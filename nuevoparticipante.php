@@ -108,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php include 'templates/barranav.php'; ?>
                 <h2>CURSOS Y CAPACITACIONES</h2>
                 <h3>Agregar nuevo participante</h3>
+                <p class="rojo">(los campos con * son obligatorios)</p>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -117,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST">
                         <table>
                             <tr>
-                                <td>Nombre del Participante:</td>
+                                <td>* Nombre del Participante:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="nombre_particip" name="nombre_particip" value="<?php echo $nombre_particip; ?>">
@@ -125,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Apellidos del Participante:</td>
+                                <td>* Apellidos del Participante:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="apellidos_particip" name="apellidos_particip" value="<?php echo $apellidos_particip; ?>">
@@ -133,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Tipo de documento de Identidad:</td>
+                                <td>* Tipo de documento de Identidad:</td>
                                 <td>
                                     <div class="input">
                                         <select class="field" id="tipo_doc" name="tipo_doc" value="<?php echo $tipo_doc; ?>">
@@ -145,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>N° doc. de Identidad:</td>
+                                <td>* N° doc. de Identidad:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="num_doc" name="num_doc" value="<?php echo $num_doc; ?>">
@@ -161,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Teléfono del Participante:</td>
+                                <td>* Teléfono del Participante:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="telefono_particip" name="telefono_particip" value="<?php echo $telefono_particip; ?>">
@@ -169,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Cargo del Participante:</td>
+                                <td>* Cargo del Participante:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="cargo_particip" name="cargo_particip" value="<?php echo $cargo_particip; ?>">

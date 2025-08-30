@@ -1,7 +1,7 @@
 <?php
-require 'includes/funciones.php';
-require 'includes/config/database.php';
-require 'clases/cls.php';
+require '../includes/funciones.php';
+require '../includes/config/database.php';
+require '../clases/cls.php';
 
 $auth = estaAutenticado();
 $db = conectarDB();
@@ -25,7 +25,7 @@ $cursoVer = CURSOS::listarCursoId($id_curso);
 $contenido = CONTENIDOS::listarContenidoId($id_content);
 
 $descripcion = $cursoVer->descripcion;
-$pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . ".pdf?t=" . time();
+$pdf_url = "../presentaciones/curso" . $id_curso . "_presentacion" . $id_content . ".pdf?t=" . time();
 
 //$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('4', $id_user);
 
@@ -38,20 +38,19 @@ $pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRAINLAB - Centro de Capacitaciones</title>
-    <link rel="icon" href="build/img/favicon_NiBel.png" type="image/x-icon">
+    <link rel="icon" href="../build/img/favicon_NiBel.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="build/js/ajax.js"></script>
-    <?php include 'templates/cssindex.php' ?>
+    <?php include '../templates/csscapacitacion.php' ?>
 </head>
 
 <body>
     <?php
-    include 'templates/headerprincipal.php';
+    include '../templates/headerprincipalcapac.php';
     ?>
     <div class="saludo">
-        <?php include 'templates/saludoparticip.php'; ?>
+        <?php include '../templates/saludoparticip.php'; ?>
     </div>
     <main class="principal">
         <div class="contenedor tablas">
@@ -129,9 +128,8 @@ $pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . 
         </div>
     </main>
     <?php
-    include 'templates/footer.php';
+    include '../templates/footer.php';
     ?>
-    <script src="build/js/bundle.min.js"></script>
     <script src="pdfjs/pdf.js"></script>
     <script>
         const PARTICIPANTE_ID = "<?php echo $id_particip; ?>";
@@ -139,9 +137,9 @@ $pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . 
         const PDF_URL = "<?= $pdf_url ?>";
     </script>
     <?php if ($contenido->tipo_content == 1) { ?>
-        <script src="build/js/videos.js"></script>
+        <script src="../build/js/videos.js"></script>
     <?php } elseif ($contenido->tipo_content == 2) { ?>
-        <script src="build/js/presentaciones.js"></script>
+        <script src="../build/js/presentaciones.js"></script>
     <?php } ?>
 </body>
 

@@ -939,7 +939,7 @@ class PROGRESO extends Master
         $result = self::consultarSQL($qry);
 
         return array_shift($result);
-    }    
+    }
 
     //U -> Eliminar PROGRESO para reiniciar Curso:
     public function elimProgreso($id_curso, $id_particip)
@@ -1024,7 +1024,12 @@ class ASIGNACIONES extends Master
         'estado_aprob',
         'intentos',
         'nota',
-        'fecha_fin'
+        'fecha_fin',
+        'apellidos_particip',
+        'nombre_particip',
+        'nom_doc',
+        'num_doc',
+        'cargo_particip'
     ];
 
     //Declarando las variables del objeto
@@ -1037,6 +1042,11 @@ class ASIGNACIONES extends Master
     public $nota;
     public $titulo_curso;
     public $fecha_fin;
+    public $apellidos_particip;
+    public $nombre_particip;
+    public $nom_doc;
+    public $num_doc;
+    public $cargo_particip;
 
     //Construcción del objeto
     public function __construct($args = [])
@@ -1051,6 +1061,11 @@ class ASIGNACIONES extends Master
         $this->nota = $args['nota'] ?? '';
         $this->titulo_curso = $args['titulo_curso'] ?? '';
         $this->fecha_fin = $args['fecha_fin'] ?? '';
+        $this->apellidos_particip = $args['apellidos_particip'] ?? '';
+        $this->nombre_particip = $args['nombre_particip'] ?? '';
+        $this->nom_doc = $args['nom_doc'] ?? '';
+        $this->num_doc = $args['num_doc'] ?? '';
+        $this->cargo_particip = $args['cargo_particip'] ?? '';
     }
 
     //C -> Guardar los datos
@@ -1092,6 +1107,17 @@ class ASIGNACIONES extends Master
         return array_shift($result);
     }
 
+    //R -> Listar Asignación por Curso
+    public static function listarAsignacionCurso($id_curso)
+    {
+        $qry = "SELECT * FROM asignaciones 
+        INNER JOIN participantes ON participantes.id_particip = asignaciones.id_particip
+        INNER JOIN doi ON doi.id_doc = participantes.tipo_doc
+        WHERE id_curso = '$id_curso'";
+        $result = self::consultarSQL($qry);
+
+        return $result;
+    }
 
     //U -> Aprobar Curso asignado:
     public function aprobarCursoAsig($id_particip, $id_curso, $fecha_fin)
@@ -1504,7 +1530,7 @@ class CERTIFICADOS extends Master
         return array_shift($result);
     }
 
-    
+
     //R -> Listar CERTIFICADOS por participate y curso
     public static function listarCertificadoPartCurso($id_particip, $id_curso)
     {

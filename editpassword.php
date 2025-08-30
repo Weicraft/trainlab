@@ -82,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="contenido">
             <div class="contenedor panel">
                 <h3>Agregar nuevo Usuario</h3>
+                <p class="rojo">(los campos con * son obligatorios)</p>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -91,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST">
                         <table>
                             <tr>
-                                <td>Contraseña:</td>
+                                <td>* Contraseña:</td>
                                 <td>
                                     <div class="input">
                                         <input type="password" class="field" id="password" name="pass">
@@ -102,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Repetir Contraseña:</td>
+                                <td>* Repetir Contraseña:</td>
                                 <td>
                                     <div class="input">
                                         <input type="password" class="field" id="password2" name="repeatPass">

@@ -20,11 +20,13 @@ $indice = $_GET['indice'];
 //$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
 
 CURSOS::setDB($db);
+ASIGNACIONES::setDB($db);
 CONTENIDOS::setDB($db);
 EXAMEN_PREGUNTAS::setDB($db);
 $cursoVer = CURSOS::listarCursoId($id_curso);
 $contenidos = CONTENIDOS::listarContenidoCurso($id_curso);
 $examen = EXAMEN_PREGUNTAS::listarExamenCurso($id_curso);
+$asignaciones = ASIGNACIONES::listarAsignacionCurso($id_curso);
 
 $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
 $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user);
@@ -103,6 +105,16 @@ $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user)
                     <tr>
                         <th>Validez del Certificado:</th>
                         <td><?php echo $cursoVer->validez_cert; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Examen:</th>
+                        <td>
+                            <?php if ($cursoVer->examen == '1') {
+                                echo 'Sí';
+                            } else {
+                                echo ' No';
+                            } ?>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -214,7 +226,37 @@ $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user)
                     </div>
                 </div>
             <?php } ?>
+            <h3>PARTICIPANTES INSCRITOS</h3>
+            <?php if ($asignaciones) { ?>
+                <table class="formulario diseño_tablas">
+                    <tr>
+                        <th>Apellidos</th>
+                        <th>Nombre</th>
+                        <th>Tipo Documento</th>
+                        <th>N° Documento</th>
+                        <th>Cargo</th>
+                    </tr>
+                    <?php
+                    foreach ($asignaciones as $asignacion) :
+                    ?>
+                        <tr>
+                            <td><?php echo $asignacion->apellidos_particip; ?></td>
+                            <td><?php echo $asignacion->nombre_particip; ?></td>
+                            <td><?php echo $asignacion->nom_doc; ?></td>
+                            <td><?php echo $asignacion->num_doc; ?></td>
+                            <td><?php echo $asignacion->cargo_particip; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            <?php } else { ?>
+                <div class="margin-top-mayor">
+                    <div class="eliminar">
+                        <p><span>No existen Participantes asignados a este curso</span></p>
+                    </div>
+                </div>
+            <?php } ?>
         </div>
+
         <div class="cont-boton">
             <a href="cursos.php?indice=<?php echo $indice; ?>"><input class="boton" type="submit" value="Volver"></a>
         </div>

@@ -27,9 +27,6 @@ $contenido = CONTENIDOS::listarContenidoId($id_content);
 
 $descripcion = $cursoVer->descripcion;
 $pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . ".pdf?t=" . time();
-
-//$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('4', $id_user);
-
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +40,6 @@ $pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="build/js/ajax.js"></script>
     <?php include 'templates/cssindex.php' ?>
 </head>
 
@@ -119,7 +115,6 @@ $pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . 
     <?php
     include 'templates/footer.php';
     ?>
-    <script src="build/js/bundle.min.js"></script>
     <script src="pdfjs/pdf.js"></script>
 <script>
         const PARTICIPANTE_ID = "0";

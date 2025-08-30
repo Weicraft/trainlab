@@ -1,6 +1,6 @@
 <?php
-require 'includes/funciones.php';
-require 'includes/config/database.php';
+require '../includes/funciones.php';
+require '../includes/config/database.php';
 
 $db = conectarDB();
 
@@ -52,10 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TRAINLAB - Centro de Capacitaciones</title>
-    <link rel="icon" href="build/img/favicon_NiBel.png" type="image/x-icon">
+    <link rel="icon" href="../build/img/favicon_NiBel.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <?php include 'templates/cssindex.php' ?>
+    <?php include '../templates/csscapacitacion.php' ?>
 </head>
 
 <body>
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p><?php mostrarFecha() ?></p>
         </div>
         <div class="header">
-            <img src="build/img/banner_login.png" alt="Imagen Banner">
+            <img src="../build/img/banner_login.png" alt="Imagen Banner">
         </div>
     </header>
 
@@ -101,11 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
     <?php
-    include 'templates/footer.php';
+    include '../templates/footer.php';
     ?>
 </body>
 
-<script src="build/js/bundle.min.js"></script>
+<script src="../build/js/bundle.min.js"></script>
 <script src="jquery.js"></script>
 <script src="scriptsjquery.js"></script>
 

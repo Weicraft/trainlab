@@ -45,6 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores[] = 'Debe registrar el nombre del curso o capacitación';
     }
 
+    if (!$tipo_curso) {
+        $errores[] = 'Debe elegir el tipo de curso o capacitación';
+    }
+
+    if (!$validez_cert) {
+        $errores[] = 'Debe indicar la validez del certificado del curso';
+    }
+
     if (empty($errores)) {
         //Guardar los datos en BD
         $nuevoCurso->crear($titulo_curso, $descripcion, $tipo_curso, $fecha_creacion, $examen, $validez_cert);
@@ -79,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php include 'templates/barranav.php'; ?>
                 <h2>CURSOS Y CAPACITACIONES</h2>
                 <h3>Agregar nuevo curso o capacitación</h3>
+                <p class="rojo">(los campos con * son obligatorios)</p>
                 <div class="diseño_form formulario">
                     <?php foreach ($errores as $error) : ?>
                         <div class="alerta error">
@@ -88,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form method="POST">
                         <table>
                             <tr>
-                                <td>Nombre del Curso/Capacitación:</td>
+                                <td>* Nombre del Curso/Capacitación:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="titulo_curso" name="titulo_curso" value="<?php echo $titulo_curso; ?>">
@@ -99,12 +108,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <td>Descripción del Curso/Capacitación:</td>
                                 <td>
                                     <div class="input">
-                                        <input type="text" class="field" id="descripcion" name="descripcion" value="<?php echo $descripcion; ?>">
+                                        <textarea class="field" id="descripcion" name="descripcion" rows="6"><?php echo $descripcion; ?></textarea>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Tipo de Curso:</td>
+                                <td>* Tipo de Curso:</td>
                                 <td>
                                     <div class="align-right-column">
                                         <label class="radio-item">
@@ -124,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Examen:</td>
+                                <td>* Examen:</td>
                                 <td>
                                     <div class="align-right-column">
                                         <div class="toggle-wrapper">
@@ -139,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <td>Validez del Certificado:</td>
+                                <td>* Validez del Certificado:</td>
                                 <td>
                                     <div class="input">
                                         <input type="text" class="field" id="validez_cert" name="validez_cert" value="<?php echo $validez_cert; ?>">

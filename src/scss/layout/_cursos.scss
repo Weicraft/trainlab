@@ -97,3 +97,237 @@
     }
   }
 }
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  padding: 1.2rem;
+  background: #fefcff;
+  border: 1px solid #e9d5ff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.file-actions {
+  display: flex;
+  gap: 0.4rem; // 🔹 menos espacio entre botones
+  align-items: center;
+}
+
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #f3e8ff;
+  color: #6b21a8;
+  padding: 0.6rem 1.2rem;   // 🔹 igual arriba y abajo
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  line-height: 1;           // 🔹 evita “inflado” vertical
+  transition: all 0.2s ease-in-out;
+
+  .icon {
+    width: 1rem;
+    height: 1rem;
+    stroke: currentColor;
+  }
+
+  &:hover {
+    background: #e9d5ff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+}
+
+.btn-upload {
+  background: #d9f99d;
+  color: #3f6212;
+  padding: 0.6rem 1.1rem;   // 🔹 igual arriba y abajo
+  border: none;
+  border-radius: 0.45rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  line-height: 1;           // 🔹 corrige el desbalance
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: #bef264;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    background: #faf5ff;
+    padding: 0.4rem 0.7rem;
+    margin-bottom: 0.4rem;
+    border-radius: 0.4rem;
+    font-size: 0.85rem;
+    color: #4c1d95;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    &::before {
+      content: "📄";
+      font-size: 1rem;
+    }
+  }
+}
+
+.materiales-table-container {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.materiales-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Arial', sans-serif;
+  background: #fff7f5; // fondo crema suave
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.materiales-table thead {
+  background: #ffe5d9; // naranja pastel suave
+}
+
+.materiales-table thead th {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  color: #8b3d2d; // marrón rojizo que complementa granate
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.materiales-table tbody td {
+  padding: 0.7rem 1rem;
+  border-top: 1px solid #ffd8c2;
+  color: #5c2e21;
+  font-size: 0.9rem;
+}
+
+.materiales-table tbody tr:nth-child(even) {
+  background: #fff1eb; // fila alterna, tono crema más suave
+}
+
+.btn-descarga {
+  display: inline-block;
+  background: #ffd6ba; // naranja pastel claro
+  color: #8b3d2d; // mismo marrón rojizo del encabezado
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: #ffc3a3;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.btn-eliminar-adjunto {
+  display: inline-block;
+  background: #fca5a5; // rojo pastel
+  color: #7f1d1d;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: #f87171;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.buscador-container {
+  display: flex;
+  width: 400px;
+  max-width: 800px;
+  margin-top: 3rem;
+  border-radius: 0.6rem;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.buscador-input {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  border: none;
+  outline: none;
+  background: #fff7f5; // fondo crema suave
+  color: #5c2e21;       // texto marrón rojizo
+  transition: all 0.2s ease-in-out;
+
+  &::placeholder {
+    color: #a16a54;
+  }
+
+  &:focus {
+    background: #fff2ec;
+  }
+}
+
+.buscador-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #8b3d2d; // granate complementario
+  color: #fff7f5;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  .icon {
+    width: 1rem;
+    height: 1rem;
+    stroke: currentColor;
+  }
+
+  &:hover {
+    background: #a04c3d;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+

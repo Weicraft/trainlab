@@ -57,23 +57,6 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user);
         <div class="contenedor tablas">
             <?php include 'templates/barranav.php'; ?>
             <h2>DETALLE DEL PARTICIPANTE</h2>
-            <div class="flex-simple margin-bottom">
-                <?php if ($sesionSeccion->estado_sesion == '1') { ?>
-                    <h3>Asignar Cursos: </h3><a href="asignaciones.php?id_particip=<?php echo $participVer->id_particip; ?>&indice=<?php echo $indice; ?>">
-                        <button class="btn-asignar" title="Asignar">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <!-- Persona -->
-                                <circle cx="12" cy="7" r="3" stroke="currentColor" fill="none" stroke-width="2" />
-                                <path d="M5 21c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" fill="none" stroke-width="2" />
-                                <!-- Lista / libro -->
-                                <rect x="16" y="10" width="6" height="10" rx="1" ry="1" stroke="currentColor" fill="none" stroke-width="2" />
-                                <line x1="17" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" />
-                                <line x1="17" y1="16" x2="21" y2="16" stroke="currentColor" stroke-width="2" />
-                            </svg>
-                        </button>
-                    </a>
-                <?php } ?>
-            </div>
             <div class="diseño_tablas">
                 <table>
                     <tr>

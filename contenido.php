@@ -17,8 +17,7 @@ if (!$auth) {
 $id_content = $_GET['id_content'];
 $id_curso = $_GET['id_curso'];
 $indice = $_GET['indice'];
-
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$texto = $_GET['texto'] ?? null;
 
 CURSOS::setDB($db);
 CONTENIDOS::setDB($db);
@@ -109,7 +108,7 @@ $pdf_url = "presentaciones/curso" . $id_curso . "_presentacion" . $id_content . 
             </div>
         </div>
         <div class="cont-boton">
-            <a href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><input class="boton" type="submit" value="Volver"></a>
+            <a href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>"><input class="boton" type="submit" value="Volver"></a>
         </div>
     </main>
     <?php

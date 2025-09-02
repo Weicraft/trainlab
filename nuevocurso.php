@@ -157,9 +157,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </tr>
                         </table>
                         <div class="cont-boton">
+                            <a class="boton-salir" href="cursos.php?indice=<?php echo $indice; ?>">Salir</a>
                             <input class="boton-grabar" type="submit" value="Grabar">
                     </form>
-                    <a class="boton-salir" href="cursos.php?indice=<?php echo $indice; ?>">Salir</a>
                 </div>
             </div>
         </div>

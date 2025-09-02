@@ -19,9 +19,9 @@ if (!$auth) {
 $data = json_decode(file_get_contents("php://input"), true);
 $id_particip = $data['id_particip'];
 $id_content = $data['id_content'];
+$fecha_fin = $data['fecha_local'];
 
 // Actualizar el registro existente
-$fecha_fin = date("Y-m-d H:i:s");
 $estado = 'F'; // F de Finalizado
 
 $qry = "UPDATE progreso SET estado_progress = '$estado', fecha_hora_fin = '$fecha_fin' 

@@ -16,6 +16,7 @@ $db = conectarDB();
 $data = json_decode(file_get_contents("php://input"), true);
 $id_particip = $data['id_particip'];
 $id_content = $data['id_content'];
+$fecha_inicio = $data['fecha_local'];
 
 // Verificar si ya existe un registro
 PROGRESO::setDB($db);
@@ -24,7 +25,6 @@ $contar = $progreso->contar;
 
 if ($contar == 0) {
   // Insertar nuevo registro
-  $fecha_inicio = date("Y-m-d H:i:s");
 
 $qry = "INSERT INTO progreso (id_particip, id_content, estado_progress, fecha_hora_inicio) VALUES ('$id_particip', '$id_content', 'I', '$fecha_inicio')"; 
     $result = mysqli_query($db, $qry);

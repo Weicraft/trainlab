@@ -1,18 +1,17 @@
-<canvas id="pdf-canvas"></canvas>
-<script src="pdfjs/pdf.js"></script>
+
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = "pdfjs/pdf.worker.js";
+const fecha = new Date();
 
-const url = "presentaciones/curso2_presentacion5.pdf"; // prueba con un PDF real
+const fechaLocal = fecha.getFullYear() + '-' +
+                   String(fecha.getMonth()+1).padStart(2,'0') + '-' +
+                   String(fecha.getDate()).padStart(2,'0') + ' ' +
+                   String(fecha.getHours()).padStart(2,'0') + ':' +
+                   String(fecha.getMinutes()).padStart(2,'0') + ':' +
+                   String(fecha.getSeconds()).padStart(2,'0');
 
-pdfjsLib.getDocument(url).promise.then(doc => {
-  doc.getPage(1).then(page => {
-    const viewport = page.getViewport({ scale: 1.5 });
-    const canvas = document.getElementById("pdf-canvas");
-    const ctx = canvas.getContext("2d");
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-    page.render({ canvasContext: ctx, viewport: viewport });
-  });
-});
+console.log(fechaLocal); // Esto será igual a tu reloj local
 </script>
+
+<?php
+
+?>

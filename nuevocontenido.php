@@ -21,8 +21,7 @@ if ($sesion->estado_sesion != '1') {
 
 $indice = $_GET['indice'];
 $id_curso = $_GET['id_curso'];
-
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$texto = $_GET['texto'] ?? null;
 
 CURSOS::setDB($db);
 CONTENIDOS::setDB($db);
@@ -59,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //Agregar fecha de actualización del curso
         $actualizarCurso->actualizarCurso($id_curso, $fecha_actualizacion);
         //Redirigir a lista
-        header("Location: archivo.php?indice=$indice");
+        header("Location: archivo.php?indice=$indice&texto=$texto");
     }
 }
 ?>
@@ -125,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="cont-boton">
                             <input class="boton-grabar" type="submit" value="Grabar">
                     </form>
-                    <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">Salir</a>
                 </div>
             </div>
         </div>

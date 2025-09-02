@@ -14,10 +14,15 @@ if (!$auth) {
     header('location: index.php');
 }
 
-$indice = '1';
+$indice = '2';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$texto = $_POST['texto'];
+} else {
+    $texto = $_GET['texto'];
+}
 
 CURSOS::setDB($db);
-$cursos = CURSOS::listarCursos();
+$cursosBuscados = CURSOS::BuscarCursos($texto) ?? null;
 
 $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
 ?>
@@ -44,10 +49,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
     <main class="principal">
         <div class="contenedor tablas">
             <?php include 'templates/barranav.php'; ?>
-            <h2>CURSOS Y CAPACITACIONES</h2>
-            <?php if ($sesionSeccion->estado_sesion == '1') { ?>
-                <a href="nuevocurso.php?indice=<?php echo $indice; ?>"><button class="boton-agregar">+ Agregar Nueva</button></a>
-            <?php } ?>
+            <h2>BÚSQUEDA DE CURSOS Y CAPACITACIONES CON EL CRITERIO "<?php echo $texto; ?>"</h2>    
             <form action="buscadorcursos.php" method="POST">
                 <div class="buscador-container">
                     <input type="text" class="buscador-input" placeholder="Buscar..." name="texto">
@@ -61,7 +63,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
                     </button>
                 </div>
             </form>
-            <?php if ($cursos) { ?>
+            <?php if ($cursosBuscados) { ?>
                 <table class="formulario diseño_tablas">
                     <tr>
                         <th width=10%>N°</th>
@@ -77,7 +79,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
                         <?php } ?>
                     </tr>
                     <?php
-                    foreach ($cursos as $curso) :
+                    foreach ($cursosBuscados as $curso) :
                     ?>
                         <tr>
                             <td><?php echo $curso->id_curso; ?></td>
@@ -108,7 +110,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
                             </td>
                             <td>
                                 <div class="flex-simple-center">
-                                    <a href="curso.php?id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                    <a href="curso.php?texto=<?php echo $texto; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
                                         <button class="boton-ver">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none">
                                                 <path stroke-width="2" d="M14 3h7v7m0-7L10 14m-7 7h11a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v11z" />
@@ -120,7 +122,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
                             <?php if ($sesionSeccion->estado_sesion == '1') { ?>
                                 <td>
                                     <div class="flex-simple-center">
-                                        <a href="editcurso.php?id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                        <a href="editcurso.php?texto=<?php echo $texto; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
                                             <button class="btn-editar" title="Editar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                     <path d="M12 20h9" />
@@ -132,7 +134,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
                                 </td>
                                 <td>
                                     <div class="flex-simple-center">
-                                        <a href="elimcurso.php?id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                        <a href="elimcurso.php?texto=<?php echo $texto; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
                                             <button class="btn-eliminar" title="Eliminar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -153,12 +155,17 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
             <?php } else { ?>
                 <div class="margin-top-mayor">
                     <div class="eliminar">
-                        <p><span>No existen Cursos y/o Capacitaciones registradas</span></p>
+                        <p><span>No existen Cursos y/o Capacitaciones registradas con ese criterio de búsqueda</span></p>
                     </div>
                 </div>
             <?php } ?>
+            <div class="flex">
+             <div class="cont-boton">
+                <a href="cursos.php"><input class="boton-grabar" type="submit" value="Volver a Todos los cursos"></a>
+            </div>
             <div class="cont-boton">
-                <a href="panelprincipal.php"><input class="boton" type="submit" value="Volver a Panel Principal"></a>
+                <a href="panelprincipal.php"><input class="boton-salir" type="submit" value="Volver a Panel Principal"></a>
+            </div>
             </div>
         </div>
     </main>

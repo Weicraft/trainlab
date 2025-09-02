@@ -3,6 +3,13 @@ const playBtn = document.getElementById("playBtn");
 const progreso = document.getElementById("progreso");
 const completado = document.getElementById("completado");
 const fullscreenBtn = document.getElementById("fullscreenBtn");
+const fecha = new Date();
+const fechaLocal = fecha.getFullYear() + '-' +
+                   String(fecha.getMonth()+1).padStart(2,'0') + '-' +
+                   String(fecha.getDate()).padStart(2,'0') + ' ' +
+                   String(fecha.getHours()).padStart(2,'0') + ':' +
+                   String(fecha.getMinutes()).padStart(2,'0') + ':' +
+                   String(fecha.getSeconds()).padStart(2,'0');
 
 let yaRegistradoInicio = false;
 let maxTime = 0; // posición máxima alcanzada del video
@@ -28,6 +35,7 @@ playBtn.addEventListener("click", () => {
         body: JSON.stringify({
           id_particip: PARTICIPANTE_ID,
           id_content: CONTENIDO_ID,
+          fecha_local: fechaLocal
         }),
       });
       yaRegistradoInicio = true;
@@ -83,6 +91,7 @@ video.addEventListener("ended", () => {
     body: JSON.stringify({
       id_particip: PARTICIPANTE_ID,
       id_content: CONTENIDO_ID,
+      fecha_local: fechaLocal
     }),
   });
 });

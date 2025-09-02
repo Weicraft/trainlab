@@ -21,8 +21,7 @@ if ($sesion->estado_sesion != '1') {
 
 $indice = $_GET['indice'];
 $id_curso = $_GET['id_curso'];
-
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$texto = $_GET['texto'] ?? null;
 
 EXAMEN_PREGUNTAS::setDB($db);
 EXAMEN_RESPUESTAS::setDB($db);
@@ -64,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     
-    header("Location: verexamen.php?id_curso=$id_curso&indice=$indice");
+    header("Location: verexamen.php?id_curso=$id_curso&indice=$indice&texto=$texto");
 }
 ?>
 <!DOCTYPE html>
@@ -130,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button type="button" class="boton-agregar-pregunta" id="agregar-pregunta">Agregar Pregunta</button><br><br>
                         <div class="flex">
                             <button type="submit" class="boton-grabar">Guardar Examen</button>
-                            <a class="boton-salir" href="verexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Salir sin grabar</a>
+                            <a class="boton-salir" href="verexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">Salir sin grabar</a>
                         </div>
                     </form>
 

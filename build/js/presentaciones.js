@@ -8,6 +8,13 @@ const canvas = document.getElementById("pdf-canvas");
 const ctx = canvas.getContext("2d");
 const contador = document.getElementById("contador");
 const completado = document.getElementById("completado");
+const fecha = new Date();
+const fechaLocal = fecha.getFullYear() + '-' +
+                   String(fecha.getMonth()+1).padStart(2,'0') + '-' +
+                   String(fecha.getDate()).padStart(2,'0') + ' ' +
+                   String(fecha.getHours()).padStart(2,'0') + ':' +
+                   String(fecha.getMinutes()).padStart(2,'0') + ':' +
+                   String(fecha.getSeconds()).padStart(2,'0');
 let yaRegistradoInicio = false;
 
 // Cargar PDF
@@ -47,6 +54,7 @@ document.getElementById("next").addEventListener("click", () => {
       body: JSON.stringify({
         id_particip: PARTICIPANTE_ID,
         id_content: CONTENIDO_ID,
+        fecha_local: fechaLocal
       }),
     });
     yaRegistradoInicio = true;
@@ -66,6 +74,7 @@ document.getElementById("prev").addEventListener("click", () => {
       body: JSON.stringify({
         id_particip: PARTICIPANTE_ID,
         id_content: CONTENIDO_ID,
+        fecha_local: fechaLocal
       }),
     });
     yaRegistradoInicio = true;
@@ -86,6 +95,7 @@ document.getElementById("finalizar").addEventListener("click", () => {
     body: JSON.stringify({
       id_particip: PARTICIPANTE_ID,
       id_content: CONTENIDO_ID,
+      fecha_local: fechaLocal
     }),
   });
 });

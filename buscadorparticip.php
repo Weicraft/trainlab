@@ -15,11 +15,13 @@ if (!$auth) {
 }
 
 $indice = '1';
+$texto = $_POST['texto'];
 
-CURSOS::setDB($db);
-$cursos = CURSOS::listarCursos();
+PARTICIPANTES::setDB($db);
+$participantes = PARTICIPANTES::BuscarParticip($texto);
 
-$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
+$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('4', $id_user);
+$sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,11 +46,11 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
     <main class="principal">
         <div class="contenedor tablas">
             <?php include 'templates/barranav.php'; ?>
-            <h2>CURSOS Y CAPACITACIONES</h2>
+            <h2>PARTICIPANTES</h2>
             <?php if ($sesionSeccion->estado_sesion == '1') { ?>
-                <a href="nuevocurso.php?indice=<?php echo $indice; ?>"><button class="boton-agregar">+ Agregar Nueva</button></a>
+                <a href="nuevoparticipante.php?indice=<?php echo $indice; ?>"><button class="boton-agregar">+ Agregar Nuevo</button></a>
             <?php } ?>
-            <form action="buscadorcursos.php" method="POST">
+            <form action="buscadorparticip.php" method="POST">
                 <div class="buscador-container">
                     <input type="text" class="buscador-input" placeholder="Buscar..." name="texto">
                     <button class="buscador-btn">
@@ -61,54 +63,33 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
                     </button>
                 </div>
             </form>
-            <?php if ($cursos) { ?>
+            <?php if ($participantes) { ?>
                 <table class="formulario diseño_tablas">
                     <tr>
                         <th width=10%>N°</th>
-                        <th>Nombre curso/capacitación</th>
-                        <th>Tipo de Curso</th>
-                        <th>Fecha Creación</th>
-                        <th>Fecha Actualización</th>
-                        <th>Requiere Examen</th>
+                        <th>Apellidos</th>
+                        <th>Nombre</th>
+                        <th>Cargo</th>
                         <th>Ver</th>
                         <?php if ($sesionSeccion->estado_sesion == '1') { ?>
                             <th>Editar</th>
                             <th>Eliminar</th>
                         <?php } ?>
+                        <?php if ($sesionSeccion5->estado_sesion == '1') { ?>
+                            <th>Asignar Cursos</th>
+                        <?php } ?>
                     </tr>
                     <?php
-                    foreach ($cursos as $curso) :
+                    foreach ($participantes as $participante) :
                     ?>
                         <tr>
-                            <td><?php echo $curso->id_curso; ?></td>
-                            <td><?php echo $curso->titulo_curso; ?></td>
-                            <td>
-                                <?php if ($curso->tipo_curso == '1') {
-                                    echo 'Video';
-                                } elseif ($curso->tipo_curso == '2') {
-                                    echo 'Presentación/Diap.';
-                                } else {
-                                    echo 'Mixto';
-                                } ?>
-                            </td>
-                            <td><?php echo date("d-m-Y", strtotime("$curso->fecha_creacion")); ?></td>
-                            <td>
-                                <?php if ($curso->fecha_actualizacion) {
-                                    echo date("d-m-Y", strtotime("$curso->fecha_actualizacion"));
-                                } else {
-                                    echo '';
-                                } ?>
-                            </td>
-                            <td><?php
-                                if ($curso->examen == '1') {
-                                    echo '<div class="rojo">Sí</div>';
-                                } else {
-                                    echo '<div class="azul">No</div>';
-                                } ?>
-                            </td>
+                            <td><?php echo $participante->id_particip; ?></td>
+                            <td><?php echo $participante->apellidos_particip; ?></td>
+                            <td><?php echo $participante->nombre_particip; ?></td>
+                            <td><?php echo $participante->cargo_particip; ?></td>
                             <td>
                                 <div class="flex-simple-center">
-                                    <a href="curso.php?id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                    <a href="participante.php?id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
                                         <button class="boton-ver">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none">
                                                 <path stroke-width="2" d="M14 3h7v7m0-7L10 14m-7 7h11a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v11z" />
@@ -120,7 +101,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
                             <?php if ($sesionSeccion->estado_sesion == '1') { ?>
                                 <td>
                                     <div class="flex-simple-center">
-                                        <a href="editcurso.php?id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                        <a href="editparticipante.php?id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
                                             <button class="btn-editar" title="Editar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                     <path d="M12 20h9" />
@@ -132,7 +113,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
                                 </td>
                                 <td>
                                     <div class="flex-simple-center">
-                                        <a href="elimcurso.php?id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                        <a href="elimparticipante.php?id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
                                             <button class="btn-eliminar" title="Eliminar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -146,14 +127,33 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
                                         </a>
                                     </div>
                                 </td>
+                            <?php }
+                            if ($sesionSeccion5->estado_sesion == '1') { ?>
+                                <td>
+                                    <div class="flex-simple-center">
+                                        <a href="asignaciones.php?id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
+                                            <button class="btn-asignar" title="Asignar">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <!-- Persona -->
+                                                    <circle cx="12" cy="7" r="3" stroke="currentColor" fill="none" stroke-width="2" />
+                                                    <path d="M5 21c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" fill="none" stroke-width="2" />
+                                                    <!-- Lista / libro -->
+                                                    <rect x="16" y="10" width="6" height="10" rx="1" ry="1" stroke="currentColor" fill="none" stroke-width="2" />
+                                                    <line x1="17" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" />
+                                                    <line x1="17" y1="16" x2="21" y2="16" stroke="currentColor" stroke-width="2" />
+                                                </svg>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </td>
                             <?php } ?>
                         </tr>
                     <?php endforeach; ?>
                 </table>
             <?php } else { ?>
-                <div class="margin-top-mayor">
+                <div class="margin-top-mayor margin-bottom">
                     <div class="eliminar">
-                        <p><span>No existen Cursos y/o Capacitaciones registradas</span></p>
+                        <p><span>No existen participantes inscritos para cursos y/o capacitaciones</span></p>
                     </div>
                 </div>
             <?php } ?>

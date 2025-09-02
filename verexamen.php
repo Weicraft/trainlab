@@ -16,6 +16,7 @@ if (!$auth) {
 
 $indice = $_GET['indice'];
 $id_curso = $_GET['id_curso'];
+$texto = $_GET['texto'] ?? null;
 
 //$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
 
@@ -61,10 +62,10 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user);
                 </strong>
                 <?php if ($sesionSeccion->estado_sesion == '1') { ?>
                     <div class="flex-simple">
-                        <a href="nuevapregunta.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                        <a href="nuevapregunta.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">
                             <button type="button" class="boton-agregar-pregunta" id="agregar-pregunta">Agregar Pregunta</button>
                         </a>
-                        <a href="elimexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                        <a href="elimexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">
                             <button class="boton-eliminar-examen margin-left">
                                 Eliminar Examen
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -84,7 +85,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user);
                                     <label><strong><?php echo $pregunta->texto_pregunta; ?>:</strong></label>
                                     <?php if ($sesionSeccion->estado_sesion == '1') { ?>
                                         <div class="margin-left">
-                                            <a href="editpregunta.php?id_pregunta=<?php echo $pregunta->id_pregunta; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                            <a href="editpregunta.php?id_pregunta=<?php echo $pregunta->id_pregunta; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">
                                                 <button class="btn-editar" title="Editar">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                         <path d="M12 20h9" />
@@ -94,7 +95,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user);
                                             </a>
                                         </div>
                                         <div class="margin-left">
-                                            <a href="elimpregunta.php?id_pregunta=<?php echo $pregunta->id_pregunta; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                            <a href="elimpregunta.php?id_pregunta=<?php echo $pregunta->id_pregunta; ?>&id_curso=<?php echo $curso->id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">
                                                 <button class="btn-eliminar" title="Eliminar">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -128,7 +129,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user);
                         </div>
                     <?php endforeach; ?>
                     <div class="flex-simple-center">
-                        <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Volver</a>
+                        <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">Volver</a>
                     </div>
                 </div>
             </div>

@@ -21,8 +21,9 @@ if ($sesion->estado_sesion != '1') {
 
 $indice = $_GET['indice'];
 $id_curso = $_GET['id_curso'];
+$texto = $_GET['texto'] ?? null;
 
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$destino = asignarDestino($indice, $texto, $id_curso);
 
 CURSOS::setDB($db);
 $cursoEdit = CURSOS::listarCursoId($id_curso);
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $validez_cert
         );
         //Redirigir a lista
-        header("Location: cursos.php?indice=$indice");
+        header("Location: $destino");
     }
 }
 ?>
@@ -180,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="cont-boton">
                             <input class="boton-grabar" type="submit" value="Grabar">
                     </form>
-                    <a class="boton-salir" href="cursos.php?indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-salir" href="<?php echo $destino; ?>">Salir</a>
                 </div>
             </div>
         </div>

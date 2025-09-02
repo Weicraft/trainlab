@@ -20,8 +20,7 @@ if ($sesion->estado_sesion != '1') {
 }
 
 $indice = $_GET['indice'];
-
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$texto = $_GET['texto'] ?? null;
 
 CONTENIDOS::setDB($db);
 CURSOS::setDB($db);
@@ -64,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (move_uploaded_file($archivo['tmp_name'], $ruta_destino)) {
         echo "Archivo subido exitosamente como: $nombre_final";
 
-        header("Location: curso.php?id_curso=$id_curso&indice=$indice");
+        header("Location: curso.php?id_curso=$id_curso&indice=$indice&texto=$texto");
     } else {
         echo "Error al subir el archivo.";
     }
@@ -113,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </table>
                         <div class="cont-boton">
                             <input class="boton-grabar" type="submit" value="Grabar">
-                            <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Salir</a>
+                            <a class="boton-salir" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">Salir</a>
                         </div>
                     </form>
                 </div>

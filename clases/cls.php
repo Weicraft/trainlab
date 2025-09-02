@@ -395,6 +395,15 @@ class CURSOS extends Master
         return array_shift($result);
     }
 
+    //R -> Listar CURSOS
+    public static function BuscarCursos($texto)
+    {
+        $qry = "SELECT * FROM cursos WHERE titulo_curso LIKE '%$texto%' AND estado_curso_activ = 'A' ORDER BY id_curso DESC";
+        $result = self::consultarSQL($qry);
+
+        return $result;
+    }
+
     //U -> Actualizar datos del CURSO:
     public function editCurso(
         $id_curso,
@@ -544,6 +553,22 @@ class PARTICIPANTES extends Master
         $result = self::consultarSQL($qry);
 
         return array_shift($result);
+    }
+
+    //R -> Buscar PARTICIPANTES por criterio de texto
+    public static function BuscarParticip($texto)
+    {
+        $qry = "SELECT * FROM participantes 
+        WHERE ( nombre_particip LIKE '%$texto%' 
+        OR apellidos_particip LIKE '%$texto%'
+        OR num_doc LIKE '%$texto%'
+        OR email_particip LIKE '%$texto%'
+        OR telefono_particip LIKE '%$texto%'
+        OR cargo_particip LIKE '%$texto%' )
+        AND estado_particip_activ = 'A' ORDER BY id_particip DESC";
+        $result = self::consultarSQL($qry);
+
+        return $result;
     }
 
     //U -> Actualizar datos del PARTICIPANTE:

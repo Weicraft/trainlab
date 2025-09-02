@@ -21,8 +21,7 @@ if ($sesion->estado_sesion != '1') {
 
 $indice = $_GET['indice'];
 $id_content = $_GET['id_content'];
-
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$texto = $_GET['texto'] ?? null;
 
 CURSOS::setDB($db);
 CONTENIDOS::setDB($db);
@@ -58,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unlink($ruta_destino);
 
     //Redirigir a lista
-    header("Location: curso.php?id_curso=$id_curso&indice=$indice");
+    header("Location: curso.php?id_curso=$id_curso&indice=$indice&texto=$texto");
 }
 ?>
 <!DOCTYPE html>
@@ -93,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="cont-boton">
                             <input class="boton-salir" type="submit" value="Eliminar">
                     </form>
-                    <a class="boton-grabar" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-grabar" href="curso.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">Salir</a>
                 </div>
             </div>
         </div>

@@ -16,8 +16,9 @@ if (!$auth) {
 
 $id_curso = $_GET['id_curso'];
 $indice = $_GET['indice'];
+$texto = $_GET['texto'] ?? null;
 
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$destino = asignarDestino($indice, $texto);
 
 CURSOS::setDB($db);
 ASIGNACIONES::setDB($db);
@@ -31,8 +32,65 @@ $asignaciones = ASIGNACIONES::listarAsignacionCurso($id_curso);
 $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('2', $id_user);
 $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user);
 
-?>
+$uploadDir = __DIR__ . "/materiales/$id_curso/";
+$dir = __DIR__ . "/materiales/$id_curso/";
 
+// Crear la carpeta si no existe
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0777, true);
+}
+
+// Obtener los archivos existentes para numeración
+$archivosExistentes = array_diff(scandir($uploadDir), array('.', '..'));
+$maxNumero = 0;
+
+foreach ($archivosExistentes as $archivo) {
+    if (preg_match('/material(\d+)\./', $archivo, $coincidencias)) {
+        $numero = (int)$coincidencias[1];
+        if ($numero > $maxNumero) {
+            $maxNumero = $numero;
+        }
+    }
+}
+
+// Ahora empezamos a numerar desde $maxNumero + 1
+if (!empty($_FILES['archivos']['name'][0])) {
+    $contador = $maxNumero + 1;
+
+    foreach ($_FILES['archivos']['name'] as $key => $nombreOriginal) {
+        $tmpName = $_FILES['archivos']['tmp_name'][$key];
+        $error   = $_FILES['archivos']['error'][$key];
+        $ext     = pathinfo($nombreOriginal, PATHINFO_EXTENSION);
+
+        if ($error === UPLOAD_ERR_OK) {
+            $nuevoNombre = "material" . $contador . "." . $ext;
+            $rutaDestino = $uploadDir . $nuevoNombre;
+
+            if (move_uploaded_file($tmpName, $rutaDestino)) {
+                $contador++;
+            } 
+        }
+    }
+    header("Location:curso.php?id_curso=$id_curso&indice=$indice&texto=$texto");
+}
+
+if (isset($_POST['eliminar']) && isset($_POST['archivo_eliminar'])) {
+    $archivoEliminar = basename($_POST['archivo_eliminar']); // seguridad
+    $rutaArchivo = $dir . $archivoEliminar;
+
+    if (file_exists($rutaArchivo)) {
+        if (unlink($rutaArchivo)) {
+            echo "<script>alert('Archivo eliminado correctamente');</script>";
+            echo "<script>window.location.reload();</script>";
+            header("Location:curso.php?id_curso=$id_curso&indice=$indice&texto=$texto");
+        } else {
+            echo "<script>alert('No se pudo eliminar el archivo');</script>";
+        }
+    } else {
+        echo "<script>alert('Archivo no encontrado');</script>";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -120,16 +178,16 @@ $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user)
             </div>
             <div class="flex">
                 <?php if ($sesionSeccion->estado_sesion == '1') { ?>
-                    <a href="nuevocontenido.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><button class="boton-agregar margin-top">+ Agregar Nuevo Contenido</button></a>
+                    <a href="nuevocontenido.php?texto=<?php echo $texto; ?>&id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><button class="boton-agregar margin-top">+ Agregar Nuevo Contenido</button></a>
                     <?php }
 
                 if ($cursoVer->examen == '1') {
                     if (!$examen) {
                         if ($sesionSeccion3->estado_sesion == '1') { ?>
-                            <a href="nuevoexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><button class="boton-examen margin-top">+ Crear Examen</button></a>
+                            <a href="nuevoexamen.php?texto=<?php echo $texto; ?>&id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>"><button class="boton-examen margin-top">+ Crear Examen</button></a>
                         <?php }
                     } else { ?>
-                        <a href="verexamen.php?id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                        <a href="verexamen.php?texto=<?php echo $texto; ?>&id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
                             <div class="ver-examen margin-tiny-top">
                                 <span class="texto-examen">Ver Examen</span>
                                 <svg class="icono-examen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="48" height="48">
@@ -177,7 +235,7 @@ $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user)
                                 }; ?></td>
                             <td>
                                 <div class="flex-simple-center">
-                                    <a href="contenido.php?id_content=<?php echo $contenido->id_content; ?>&id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                                    <a href="contenido.php?id_content=<?php echo $contenido->id_content; ?>&id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">
                                         <button class="boton-ver">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none">
                                                 <path stroke-width="2" d="M14 3h7v7m0-7L10 14m-7 7h11a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v11z" />
@@ -189,7 +247,7 @@ $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user)
                             <?php if ($sesionSeccion->estado_sesion == '1') { ?>
                                 <td>
                                     <div class="flex-simple-center">
-                                        <a href="editcontenido.php?id_content=<?php echo $contenido->id_content; ?>&id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                                        <a href="editcontenido.php?id_content=<?php echo $contenido->id_content; ?>&id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">
                                             <button class="btn-editar" title="Editar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                     <path d="M12 20h9" />
@@ -201,7 +259,7 @@ $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user)
                                 </td>
                                 <td>
                                     <div class="flex-simple-center">
-                                        <a href="elimcontenido.php?id_content=<?php echo $contenido->id_content; ?>&id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>">
+                                        <a href="elimcontenido.php?id_content=<?php echo $contenido->id_content; ?>&id_curso=<?php echo $id_curso; ?>&indice=<?php echo $indice; ?>&texto=<?php echo $texto; ?>">
                                             <button class="btn-eliminar" title="Eliminar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -226,7 +284,68 @@ $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user)
                     </div>
                 </div>
             <?php } ?>
-            <h3>PARTICIPANTES INSCRITOS</h3>
+            <div>
+                <div class="flex-simple-center margin-top margin-tiny-bottom"><strong>Material didáctico</strong></div>
+                <div class="materiales-table-container margin-bottom">
+                    <table class="materiales-table">
+                        <thead>
+                            <tr>
+                                <th>Archivo</th>
+                                <th>Descargar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php 
+                            if (is_dir($dir)) {
+                                $archivos = array_diff(scandir($dir), array('.', '..'));
+
+                                if (!empty($archivos)) {
+                                    foreach ($archivos as $archivo) {
+                                        $rutaArchivo = "materiales/$id_curso/$archivo";
+                                        echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($archivo) . '</td>';
+                                        echo '<td><a href="' . $rutaArchivo . '" download class="btn-descarga">Descargar</a></td>';
+                                        // Botón eliminar
+                                        echo '<td>
+                                <form method="POST" class="form-eliminar" onsubmit="return confirm(\'¿Eliminar este archivo?\');">
+                                    <input type="hidden" name="archivo_eliminar" value="' . htmlspecialchars($archivo) . '">
+                                    <button type="submit" name="eliminar" class="btn-eliminar-adjunto">Eliminar</button>
+                                </form>
+                              </td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="3">No hay archivos en este curso.</td></tr>';
+                                }
+                            } else {
+                                echo '<tr><td colspan="3">Carpeta del curso no encontrada.</td></tr>';
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <form method="POST" enctype="multipart/form-data" class="upload-form">
+                    <div class="file-actions">
+                        <label for="fileInput" class="file-label">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                                <path d="M12 5v14M5 12h14" />
+                            </svg>
+                            Seleccionar archivos
+                        </label>
+                        <input type="file" id="fileInput" name="archivos[]" multiple>
+                        <button type="submit" class="btn-upload">Subir</button>
+                    </div>
+
+                    <ul id="fileList" class="file-list"></ul>
+                </form>
+            </div>
+            <div class="margin-top">
+                <h3>PARTICIPANTES INSCRITOS</h3>
+            </div>
             <?php if ($asignaciones) { ?>
                 <table class="formulario diseño_tablas">
                     <tr>
@@ -258,13 +377,13 @@ $sesionSeccion3 = SESIONES::listarSesionesPorIdentificacorUsuario('3', $id_user)
         </div>
 
         <div class="cont-boton">
-            <a href="cursos.php?indice=<?php echo $indice; ?>"><input class="boton" type="submit" value="Volver"></a>
+            <a href="<?php echo $destino; ?>"><input class="boton" type="submit" value="Volver"></a>
         </div>
     </main>
     <?php
     include 'templates/footer.php';
     ?>
-    <script src="build/js/bundle.min.js"></script>
+    <script src="build/js/upload.js"></script>
 </body>
 
 </html>

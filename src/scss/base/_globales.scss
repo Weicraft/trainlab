@@ -757,6 +757,37 @@ p {
     justify-content: space-evenly;
 }
 
+.btn-copy-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #f3e8ff; // pastel lila
+  color: #6b21a8; // morado oscuro para texto
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem; // 8px
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+  &:hover {
+    background-color: #e9d5ff; // lila más claro al hover
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  .icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    stroke: currentColor; // toma el color del texto
+  }
+}
+
 .alerta-error {
     padding: .5rem;
     text-align: center;

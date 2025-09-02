@@ -12,6 +12,7 @@ if (!$auth) {
 $id_particip = $_SESSION['particip'];
 $id_curso = $_GET['id_curso'];
 $indice = $_GET['indice'];
+$dir = __DIR__ . "/../materiales/$id_curso/";
 
 //$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
 
@@ -52,7 +53,7 @@ endforeach;
     <link rel="icon" href="../build/img/favicon_NiBel.png" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <?php include '../templates/csscapacitacion.php' ?>
 </head>
 
@@ -150,6 +151,38 @@ endforeach;
                         </button>
                     </a>
                 <?php } ?>
+                <div class="flex-simple-center margin-top margin-tiny-bottom"><strong>Material didáctico</strong></div>
+                <div class="materiales-table-container margin-bottom">
+                    <table class="materiales-table">
+                        <thead>
+                            <tr>
+                                <th>Archivo</th>
+                                <th>Descargar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if (is_dir($dir)) {
+                                $archivos = array_diff(scandir($dir), array('.', '..'));
+
+                                if (!empty($archivos)) {
+                                    foreach ($archivos as $archivo) {
+                                        $rutaArchivo = "../materiales/$id_curso/$archivo";
+                                        echo '<tr>';
+                                        echo '<td>' . htmlspecialchars($archivo) . '</td>';
+                                        echo '<td><a href="' . $rutaArchivo . '" download class="btn-descarga">Descargar</a></td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo '<tr><td colspan="2">No hay archivos en este curso.</td></tr>';
+                                }
+                            } else {
+                                echo '<tr><td colspan="2">Carpeta del curso no encontrada.</td></tr>';
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
                 <table class="formulario diseño_tablas">
                     <tr>
                         <th width=10%>Id</th>

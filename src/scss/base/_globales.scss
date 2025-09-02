@@ -758,34 +758,34 @@ p {
 }
 
 .btn-copy-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  background-color: #f3e8ff; // pastel lila
-  color: #6b21a8; // morado oscuro para texto
-  font-size: 1rem;
-  font-weight: 500;
-  border: none;
-  border-radius: 0.5rem; // 8px
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background-color: #f3e8ff; // pastel lila
+    color: #6b21a8; // morado oscuro para texto
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 0.5rem; // 8px
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 
-  &:hover {
-    background-color: #e9d5ff; // lila más claro al hover
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  }
+    &:hover {
+        background-color: #e9d5ff; // lila más claro al hover
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-  &:active {
-    transform: scale(0.97);
-  }
+    &:active {
+        transform: scale(0.97);
+    }
 
-  .icon {
-    width: 1.2rem;
-    height: 1.2rem;
-    stroke: currentColor; // toma el color del texto
-  }
+    .icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        stroke: currentColor; // toma el color del texto
+    }
 }
 
 .alerta-error {
@@ -944,6 +944,32 @@ p {
     color: v.$negro;
     font-weight: 700;
 }
+
+.refresh-btn {
+    background-color: #b3e5fc; // celeste pastel
+    border: none;
+    border-radius: 50%;
+    padding: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    transition: background-color 0.2s, transform 0.2s;
+
+    &:hover {
+        background-color: #81d4fa;
+        transform: rotate(20deg);
+    }
+
+    .refresh-icon {
+        width: 20px;
+        height: 20px;
+        fill: #0288d1; // un azul más fuerte para el icono
+    }
+}
+
 
 .menu-opcion:hover {
     transform: translateY(-2px);
@@ -1105,4 +1131,56 @@ p {
 .anulado {
     color: v.$rojo;
     font-weight: v.$bold;
+}
+
+.toggle-aula-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-aula-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-aula-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #d1d5db;
+    /* gris claro cuando está apagado */
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.toggle-aula-switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-aula-switch input:checked+.slider {
+    background-color: #86efac;
+    /* verde menta pastel cuando está activo */
+}
+
+.toggle-aula-switch input:focus+.slider {
+    box-shadow: 0 0 2px #86efac;
+}
+
+.toggle-aula-switch input:checked+.slider:before {
+    transform: translateX(24px);
 }

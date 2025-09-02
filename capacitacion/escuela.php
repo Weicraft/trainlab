@@ -38,7 +38,7 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
+
     <?php include '../templates/csscapacitacion.php' ?>
 </head>
 
@@ -76,18 +76,15 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                         </ul>
                     </div>
                 </div>
-
             </div>
-            <?php if ($asignaciones) {
-            ?>
-                <div class="diseño_tablas">
+            <div class="diseño_tablas">
+                <?php if ($asignaciones) {
+                ?>
                     <table class="formulario diseño_tablas">
                         <tr>
                             <th width=10%>N°</th>
                             <th>Nombre curso/capacitación</th>
-                            <th>Fecha Asignación</th>
-                            <th>Estado del Curso</th>
-                            <th>Examen</th>
+                            <th>Estado</th>
                             <th>Comenzar</th>
                             <th>Nota</th>
                         </tr>
@@ -104,7 +101,16 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                                 <td><?= $asignacion->id_curso ?></td>
                                 <td><?= $asignacion->titulo_curso ?></td>
                                 <td>
-                                    <?php echo date("d-m-Y", strtotime("$asignacion->fecha_asign")); ?>
+                                    <div class="flex-simple-center">
+                                        <a href="detallecurso.php?id_curso=<?php echo $asignacion->id_curso; ?>&indice=<?php echo $indice; ?>">
+                                            <button class="btn-comenzar">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z" />
+                                                </svg>
+                                                Comenzar
+                                            </button>
+                                        </a>
+                                    </div>
                                 </td>
                                 <td>
                                     <?php
@@ -118,25 +124,6 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                                         echo '<div class="verde">Culminado</div>';
                                     }
                                     ?>
-                                </td>
-                                <td>
-                                    <?php if ($curso->examen == '1') {
-                                        echo '<div class="rojo"><strong>SI</strong></div>';
-                                    } else {
-                                        echo '<div class="azul"><strong>NO</strong></div>';
-                                    } ?>
-                                </td>
-                                <td>
-                                    <div class="flex-simple-center">
-                                        <a href="detallecurso.php?id_curso=<?php echo $asignacion->id_curso; ?>&indice=<?php echo $indice; ?>">
-                                            <button class="btn-comenzar">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                    <path d="M8 5v14l11-7z" />
-                                                </svg>
-                                                Comenzar
-                                            </button>
-                                        </a>
-                                    </div>
                                 </td>
                                 <td>
                                     <?php
@@ -157,7 +144,7 @@ $asignaciones = ASIGNACIONES::listarCursosAsignados($id_particip);
                         </div>
                     </div>
                 <?php } ?>
-                </div>
+            </div>
         </div>
     </main>
     <?php

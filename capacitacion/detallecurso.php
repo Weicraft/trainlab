@@ -25,7 +25,7 @@ CONTENIDOS::setDB($db);
 $cursoVer = CURSOS::listarCursoId($id_curso);
 $contenidos = CONTENIDOS::listarContenidoCurso($id_curso);
 $asignaciones = ASIGNACIONES::listarAsignacion($id_particip, $id_curso);
-$fecha_fin = date("Y-m-d H:i:s");
+$fecha_fin = date("Y-m-d");
 
 foreach ($contenidos as $contenido) :
     $contarTotalContenidos = CONTENIDOS::contarContenidos($contenido->id_curso);
@@ -39,7 +39,6 @@ foreach ($contenidos as $contenido) :
         $aprobarCurso->aprobarCursoAsig($id_particip, $id_curso, $fecha_fin);
     }
 endforeach;
-//$sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('4', $id_user);
 
 ?>
 
@@ -118,8 +117,8 @@ endforeach;
                             ?>
                     </tr>
                     <tr>
-                        <th>Fecha de creación</th>
-                        <td><?php echo date("d-m-Y", strtotime("$cursoVer->fecha_creacion")); ?></td>
+                        <th>Fecha de asignación</th>
+                        <td><?php echo date("d-m-Y", strtotime("$asignaciones->fecha_asign")); ?></td>
                     </tr>
                     <tr>
                         <th>Fecha de ultima Actualización</th>
@@ -129,6 +128,28 @@ endforeach;
                             } else {
                                 echo '';
                             }; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Examen</th>
+                        <td>
+                            <?php if ($cursoVer->examen == '1') {
+                                echo '<div class="rojo"><strong>SI</strong></div>';
+                            } else {
+                                echo '<div class="azul"><strong>NO</strong></div>';
+                            } ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Nota</th>
+                        <td>
+                            <?php
+                            if ($asignaciones->nota) {
+                                echo '<strong>' . $asignaciones->nota . '</strong>';
+                            } else {
+                                echo 'S/N';
+                            }
+                            ?>
                         </td>
                     </tr>
                 </table>

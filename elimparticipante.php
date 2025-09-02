@@ -21,8 +21,9 @@ if ($sesion->estado_sesion != '1') {
 
 $id_particip = $_GET['id_particip'];
 $indice = $_GET['indice'];
+$texto = $_GET['texto'] ?? null;
 
-//$destino = asignarDestino($indice, $novelaEnv, $fecha, $capitulo, $id_hpauta);
+$destino = asignarDestino2($indice, $texto);
 
 PARTICIPANTES::setDB($db);
 $participanteElim = PARTICIPANTES::listarParticipanteId($id_particip);
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $elimParticip->elimParticipante($id_particip);
     //Redirigir a lista
-    header("Location: participantes.php?indice=$indice");
+    header("Location: $destino");
 }
 ?>
 <!DOCTYPE html>
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="cont-boton">
                             <input class="boton-salir" type="submit" value="Eliminar">
                     </form>
-                    <a class="boton-grabar" href="participantes.php?indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-grabar" href="<?php echo $destino; ?>">Salir</a>
                 </div>
             </div>
         </div>

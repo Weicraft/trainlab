@@ -20,8 +20,9 @@ if ($sesion->estado_sesion != '1') {
 }
 
 $indice = $_GET['indice'];
+$texto = $_GET['texto'] ?? null;
 
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$destino = asignarDestino2($indice, $texto);
 
 PARTICIPANTES::setDB($db);
 DOI::setDB($db);
@@ -78,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //Guardar los datos en BD
         $nuevoParticip->crear($nombre_particip, $apellidos_particip, $tipo_doc, $num_doc, $email_particip, $telefono_particip, $cargo_particip);
         //Redirigir a lista
-        header("Location: participantes.php?indice=$indice");
+        header("Location: $destino");
     }
 }
 ?>
@@ -181,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="cont-boton">
                             <input class="boton-grabar" type="submit" value="Grabar">
                     </form>
-                    <a class="boton-salir" href="participantes.php?indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-salir" href="<?php echo $destino; ?>">Salir</a>
                 </div>
             </div>
         </div>

@@ -16,8 +16,9 @@ if (!$auth) {
 
 $id_particip = $_GET['id_particip'];
 $indice = $_GET['indice'];
+$texto = $_GET['texto'] ?? null;
 
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$destino = asignarDestino2($indice, $texto);
 
 PARTICIPANTES::setDB($db);
 ASIGNACIONES::setDB($db);
@@ -104,10 +105,12 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user);
                             <th>Nombre curso/capacitación</th>
                             <th>Fecha Asignación</th>
                             <th>Estado del curso</th>
+                            <th>Fin</th>
                             <th>Certificado</th>
                             <?php if ($sesionSeccion->estado_sesion == '1') { ?>
                                 <th>Eliminar Asig.</th>
                             <?php } ?>
+                            <th>Reiniciar Curso</th>
                         </tr>
                         <?php foreach ($asignaciones as $asignacion) :
                             $contarTotalContenidos = CONTENIDOS::contarContenidos($asignacion->id_curso);
@@ -136,9 +139,11 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user);
                                     }
                                     ?>
                                 </td>
+                                <td><?php echo date("d-m-Y", strtotime($asignacion->fecha_fin)); ?></td>
+
                                 <td>
                                     <?php if ($totalContenidos == $contenidosFinalizados && $asignacion->estado_aprob == 'A') { ?>
-                                        <a href="vercert.php?id_curso=<?php echo $asignacion->id_curso; ?>&particip=<?php echo $id_particip; ?>" target="_blank">
+                                        <a href="vercert.php?id_curso=<?php echo $asignacion->id_curso; ?>&particip=<?php echo $id_particip; ?>&texto=<?php echo $texto; ?>" target="_blank">
                                             <button class="btn-certificado">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                                     <rect x="1" y="1" width="22" height="22" rx="6" fill="#f5e1ff" stroke="#e9d5ff" />
@@ -158,7 +163,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user);
                                 <?php if ($sesionSeccion->estado_sesion == '1') { ?>
                                     <td>
                                         <div class="flex-simple-center">
-                                            <a href="elimasignacion.php?id_asign=<?php echo $asignacion->id_asign; ?>&id_particip=<?php echo $id_particip; ?>&indice=<?php echo $indice; ?>">
+                                            <a href="elimasignacion.php?texto=<?php echo $texto; ?>&id_asign=<?php echo $asignacion->id_asign; ?>&id_particip=<?php echo $id_particip; ?>&indice=<?php echo $indice; ?>">
                                                 <button class="btn-eliminar" title="Eliminar">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
                                                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -173,6 +178,32 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user);
                                         </div>
                                     </td>
                                 <?php } ?>
+                                <td>
+                                    <?php if ($totalContenidos == $contenidosFinalizados && $asignacion->estado_aprob == 'A') { ?>
+                                        <form action="backend/reiniciarcurso.php" method="POST">
+                                            <input type="hidden" name="id_curso" value="<?php echo $asignacion->id_curso; ?>">
+                                            <input type="hidden" name="id_particip" value="<?php echo $id_particip; ?>">
+                                            <input type="hidden" name="id_asign" value="<?php echo $asignacion->id_asign; ?>">
+                                            <input type="hidden" name="indice" value="<?php echo $indice; ?>">
+                                            <input type="hidden" name="texto" value="<?php echo $texto; ?>">
+                                            <button class="refresh-btn" aria-label="Refrescar">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="32"
+                                                    height="32"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="#000000"
+                                                    stroke-width="1"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path d="M10.09 4.01l.496 -.495a2 2 0 0 1 2.828 0l7.071 7.07a2 2 0 0 1 0 2.83l-7.07 7.07a2 2 0 0 1 -2.83 0l-7.07 -7.07a2 2 0 0 1 0 -2.83l3.535 -3.535h-3.988" />
+                                                    <path d="M7.05 11.038v-3.988" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    <?php } ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </table>
@@ -186,7 +217,7 @@ $sesionSeccion = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user);
                 </div>
         </div>
         <div class="cont-boton">
-            <a href="participantes.php?indice=<?php echo $indice; ?>"><input class="boton" type="submit" value="Volver"></a>
+            <a href="<?php echo $destino; ?>"><input class="boton" type="submit" value="Volver"></a>
         </div>
     </main>
     <?php

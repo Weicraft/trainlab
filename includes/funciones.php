@@ -48,3 +48,22 @@ function asignarDestino($indice, $texto)
     }
     return $destino;
 }
+
+function asignarDestino2($indice, $texto)
+{
+    $destino = 0; // Valor inicial de y
+
+    switch ($indice) {
+        case 1:
+            $destino = 'participantes.php';
+            break;
+        case 2:
+            $destino = 'buscadorparticip.php?texto=' . $texto;
+            break;
+        // Agrega más casos según sea necesario
+        default:
+            // Valor predeterminado si x no coincide con ningún caso
+            break;
+    }
+    return $destino;
+}

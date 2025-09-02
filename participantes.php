@@ -77,6 +77,9 @@ $sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user)
                         <?php if ($sesionSeccion5->estado_sesion == '1') { ?>
                             <th>Asignar Cursos</th>
                         <?php } ?>
+                        <?php if ($sesionSeccion->estado_sesion == '1') { ?>
+                            <th>Activar Aula</th>
+                        <?php } ?>
                     </tr>
                     <?php
                     foreach ($participantes as $participante) :
@@ -145,6 +148,15 @@ $sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user)
                                         </a>
                                     </div>
                                 </td>
+                            <?php }
+                            if ($sesionSeccion->estado_sesion == '1') { ?>
+                                <td>
+                                    <label class="toggle-aula-switch">
+                                        <input type="checkbox" class="toggle-aula" data-id="<?php echo $participante->id_particip; ?>"
+                                            <?php echo ($participante->activo_aula == 'A') ? 'checked' : ''; ?>>
+                                        <span class="slider"></span>
+                                    </label>
+                                </td>
                             <?php } ?>
                         </tr>
                     <?php endforeach; ?>
@@ -166,5 +178,6 @@ $sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user)
     ?>
     <script src="build/js/bundle.min.js"></script>
 </body>
+<script src="build/js/aulaactivar.js"></script>
 
 </html>

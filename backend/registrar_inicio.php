@@ -8,9 +8,6 @@ $identificador = '0';
 $auth = estaAutenticado();
 $db = conectarDB();
 
-
-//SESIONES::setDB($db);
-
 // incluir tu archivo de conexión aquí
 
 $data = json_decode(file_get_contents("php://input"), true);

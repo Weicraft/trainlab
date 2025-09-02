@@ -500,7 +500,8 @@ class PARTICIPANTES extends Master
         'email_particip',
         'telefono_particip',
         'cargo_particip',
-        'estado_particip_activ'
+        'estado_particip_activ',
+        'activo_aula'
     ];
 
     //Declarando las variables del objeto
@@ -513,6 +514,7 @@ class PARTICIPANTES extends Master
     public $telefono_particip;
     public $cargo_particip;
     public $estado_particip_activ;
+    public $activo_aula;
 
     //Construcción del objeto
     public function __construct($args = [])
@@ -527,13 +529,14 @@ class PARTICIPANTES extends Master
         $this->telefono_particip = $args['telefono_particip'] ?? '';
         $this->cargo_particip = $args['cargo_particip'] ?? '';
         $this->estado_particip_activ = $args['estado_particip_activ'] ?? '';
+        $this->activo_aula = $args['activo_aula'] ?? '';
     }
 
     //C -> Guardar los datos
     public function crear($nombre_particip, $apellidos_particip, $tipo_doc, $num_doc, $email_particip, $telefono_particip, $cargo_particip)
     {
-        $qry = "INSERT INTO participantes (nombre_particip, apellidos_particip, tipo_doc, num_doc, email_particip, telefono_particip, cargo_particip, estado_particip_activ)
-        VALUES ('$nombre_particip', '$apellidos_particip', '$tipo_doc', '$num_doc', '$email_particip', '$telefono_particip', '$cargo_particip', 'A')";
+        $qry = "INSERT INTO participantes (nombre_particip, apellidos_particip, tipo_doc, num_doc, email_particip, telefono_particip, cargo_particip, estado_particip_activ, activo_aula)
+        VALUES ('$nombre_particip', '$apellidos_particip', '$tipo_doc', '$num_doc', '$email_particip', '$telefono_particip', '$cargo_particip', 'A', 'A')";
         self::$db->query($qry);
     }
 
@@ -585,6 +588,13 @@ class PARTICIPANTES extends Master
         $qry = "UPDATE participantes SET nombre_particip='$nombre_particip', apellidos_particip='$apellidos_particip', tipo_doc='$tipo_doc',
         num_doc='$num_doc', email_particip='$email_particip', telefono_particip='$telefono_particip', cargo_particip='$cargo_particip'
         WHERE id_particip='$id_particip'";
+        self::$db->query($qry);
+    }
+
+    //U -> Desactivar PARTICIPANTE del aula:
+    public function desacAulaParticipante($id_particip)
+    {
+        $qry = "UPDATE participantes SET activo_aula='D' WHERE id_particip='$id_particip'";
         self::$db->query($qry);
     }
 
@@ -949,7 +959,7 @@ class PROGRESO extends Master
     {
         $qry = "SELECT COUNT(*) AS contarProgreso FROM contenidos
         INNER JOIN progreso ON progreso.id_content = contenidos.id_content
-        WHERE id_curso = '$id_curso' AND id_particip = '$id_particip' AND fecha_hora_inicio IS NOT NULL and fecha_hora_fin IS NULL";
+        WHERE id_curso = '$id_curso' AND id_particip = '$id_particip' AND fecha_hora_inicio IS NOT NULL and fecha_hora_fin IS NULL AND estado_content_activ = 'A'";
         $result = self::consultarSQL($qry);
 
         return array_shift($result);
@@ -960,7 +970,7 @@ class PROGRESO extends Master
     {
         $qry = "SELECT COUNT(*) AS contarProgreso FROM contenidos
         INNER JOIN progreso ON progreso.id_content = contenidos.id_content
-        WHERE id_curso = '$id_curso' AND id_particip = '$id_particip' AND fecha_hora_fin IS NOT NULL";
+        WHERE id_curso = '$id_curso' AND id_particip = '$id_particip' AND fecha_hora_fin IS NOT NULL AND estado_content_activ = 'A'";
         $result = self::consultarSQL($qry);
 
         return array_shift($result);
@@ -1183,6 +1193,13 @@ class ASIGNACIONES extends Master
     public function elimAsign($id_asign)
     {
         $qry = "DELETE FROM asignaciones WHERE id_asign='$id_asign'";
+        self::$db->query($qry);
+    }
+
+    //U -> Reiniciar ASIGNACION:
+    public function reiniciarAsign($id_asign)
+    {
+        $qry = "UPDATE asignaciones SET estado_aprob = 'I', intentos = NULL, nota = NULL, fecha_fin = NULL WHERE id_asign='$id_asign'";
         self::$db->query($qry);
     }
 

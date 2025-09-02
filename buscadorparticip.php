@@ -14,8 +14,12 @@ if (!$auth) {
     header('location: index.php');
 }
 
-$indice = '1';
-$texto = $_POST['texto'];
+$indice = '2';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $texto = $_POST['texto'];
+} else {
+    $texto = $_GET['texto'];
+}
 
 PARTICIPANTES::setDB($db);
 $participantes = PARTICIPANTES::BuscarParticip($texto);
@@ -46,10 +50,7 @@ $sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user)
     <main class="principal">
         <div class="contenedor tablas">
             <?php include 'templates/barranav.php'; ?>
-            <h2>PARTICIPANTES</h2>
-            <?php if ($sesionSeccion->estado_sesion == '1') { ?>
-                <a href="nuevoparticipante.php?indice=<?php echo $indice; ?>"><button class="boton-agregar">+ Agregar Nuevo</button></a>
-            <?php } ?>
+            <h2>BUSCAR PARTICIPANTES CON EL CRITERIO "<?php echo $texto; ?>"</h2>
             <form action="buscadorparticip.php" method="POST">
                 <div class="buscador-container">
                     <input type="text" class="buscador-input" placeholder="Buscar..." name="texto">
@@ -89,7 +90,7 @@ $sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user)
                             <td><?php echo $participante->cargo_particip; ?></td>
                             <td>
                                 <div class="flex-simple-center">
-                                    <a href="participante.php?id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
+                                    <a href="participante.php?texto=<?php echo $texto; ?>&id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
                                         <button class="boton-ver">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none">
                                                 <path stroke-width="2" d="M14 3h7v7m0-7L10 14m-7 7h11a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v11z" />
@@ -101,7 +102,7 @@ $sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user)
                             <?php if ($sesionSeccion->estado_sesion == '1') { ?>
                                 <td>
                                     <div class="flex-simple-center">
-                                        <a href="editparticipante.php?id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
+                                        <a href="editparticipante.php?texto=<?php echo $texto; ?>&id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
                                             <button class="btn-editar" title="Editar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                     <path d="M12 20h9" />
@@ -113,7 +114,7 @@ $sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user)
                                 </td>
                                 <td>
                                     <div class="flex-simple-center">
-                                        <a href="elimparticipante.php?id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
+                                        <a href="elimparticipante.php?texto=<?php echo $texto; ?>&id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
                                             <button class="btn-eliminar" title="Eliminar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -131,7 +132,7 @@ $sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user)
                             if ($sesionSeccion5->estado_sesion == '1') { ?>
                                 <td>
                                     <div class="flex-simple-center">
-                                        <a href="asignaciones.php?id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
+                                        <a href="asignaciones.php?texto=<?php echo $texto; ?>&id_particip=<?php echo $participante->id_particip; ?>&indice=<?php echo $indice; ?>">
                                             <button class="btn-asignar" title="Asignar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                                     <!-- Persona -->
@@ -157,8 +158,13 @@ $sesionSeccion5 = SESIONES::listarSesionesPorIdentificacorUsuario('5', $id_user)
                     </div>
                 </div>
             <?php } ?>
-            <div class="cont-boton">
-                <a href="panelprincipal.php"><input class="boton" type="submit" value="Volver a Panel Principal"></a>
+            <div class="flex">
+                <div class="cont-boton">
+                    <a href="participantes.php"><input class="boton-grabar" type="submit" value="Volver a Todos los participantes"></a>
+                </div>
+                <div class="cont-boton">
+                    <a href="panelprincipal.php"><input class="boton-salir" type="submit" value="Volver a Panel Principal"></a>
+                </div>
             </div>
         </div>
     </main>

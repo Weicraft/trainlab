@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errores)) {
 
-        $queryUser = "SELECT * FROM participantes WHERE num_doc='$codigo' AND estado_particip_activ = 'A'";
+        $queryUser = "SELECT * FROM participantes WHERE num_doc='$codigo' AND estado_particip_activ = 'A' AND activo_aula = 'A'";
         $resultUser = mysqli_query($db, $queryUser);
 
         if ($resultUser->num_rows) {
@@ -83,10 +83,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="flex-simple-center">
                             <div>
                                 <div class="form-field">
-                                    <div class="label">
+                                    <div class="label margin-top">
                                         <label for="">Código de acceso (N° doc. Identidad):</label>
                                     </div>
-                                    <div class="input">
+                                    <div class="input flex-simple-center margin-top">
                                         <input type="text" class="field" id="codigo" name="codigo">
                                     </div>
                                 </div>

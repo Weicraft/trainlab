@@ -21,8 +21,9 @@ if ($sesion->estado_sesion != '1') {
 
 $indice = $_GET['indice'];
 $id_particip = $_GET['id_particip'];
+$texto = $_GET['texto'] ?? null;
 
-//$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);
+$destino = asignarDestino2($indice, $texto);
 
 PARTICIPANTES::setDB($db);
 DOI::setDB($db);
@@ -79,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cargo_particip
     );
         //Redirigir a lista
-        header("Location: participantes.php?indice=$indice");
+        header("Location: $destino");
     }
 }
 ?>
@@ -182,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="cont-boton">
                             <input class="boton-grabar" type="submit" value="Grabar">
                     </form>
-                    <a class="boton-salir" href="participantes.php?indice=<?php echo $indice; ?>">Salir</a>
+                    <a class="boton-salir" href="<?php echo $destino; ?>">Salir</a>
                 </div>
             </div>
         </div>

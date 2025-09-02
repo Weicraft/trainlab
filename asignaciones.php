@@ -21,6 +21,9 @@ if ($sesion->estado_sesion != '1') {
 
 $id_particip = $_GET['id_particip'];
 $indice = $_GET['indice'];
+$texto = $_GET['texto'] ?? null;
+
+$destino = asignarDestino2($indice, $texto);
 
 CURSOS::setDB($db);
 PARTICIPANTES::setDB($db);
@@ -50,7 +53,7 @@ if (isset($_POST['asignar_cursos']) && !empty($_POST['cursos'])) {
         // $conn->query($sql);
     }
 
-    header("Location: participante.php?id_particip=$id_particip&indice=$indice");
+    header("Location: participante.php?id_particip=$id_particip&indice=$indice&texto=$texto");
 
 } else if (isset($_POST['asignar_cursos'])) {
 
@@ -139,7 +142,7 @@ if (isset($_POST['asignar_cursos']) && !empty($_POST['cursos'])) {
             <?php } ?>
 
             <div class="cont-boton">
-                <a href="participantes.php"><input class="boton" type="submit" value="Volver a Participantes"></a>
+                <a href="<?php echo $destino; ?>"><input class="boton" type="submit" value="Volver a Participantes"></a>
             </div>
         </div>
     </main>

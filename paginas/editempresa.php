@@ -11,14 +11,14 @@ $db = conectarDB();
 include 'templates/user.php';
 
 if (!$auth) {
-    header('location: login.php');
+    header('location: login');
 }
 
 $errores = [];
 
 //Gestión de Sesiones
 if ($sesion->estado_sesion != '1') {
-    header('location: login.php');
+    header('location: login');
 }
 
 //$destino = asignarDestino($indice, $novela, $fecha, $capitulo, $hpauta);

@@ -11,7 +11,7 @@ $db = conectarDB();
 include 'templates/user.php';
 
 if (!$auth) {
-    header('location: login.php');
+    header('location: login');
 }
 
 $id_curso = $_GET['id_curso'];

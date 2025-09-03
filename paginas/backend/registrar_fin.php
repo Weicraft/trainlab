@@ -12,7 +12,7 @@ $db = conectarDB();
 //SESIONES::setDB($db);
 
 if (!$auth) {
-    header('location: login.php');
+    header('location: login');
 }
 // incluir tu archivo de conexión aquí
 
